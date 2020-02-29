@@ -18,6 +18,6 @@ public class ContextManager {
 
         String path = handler.path();
         server.createContext(path, handler.handler());
-        Log.INFO("Creating context in " + path);
+        Log.ERRO("Creating context in " + path);
     }
 }

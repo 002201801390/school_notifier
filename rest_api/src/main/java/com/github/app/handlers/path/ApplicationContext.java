@@ -4,12 +4,11 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
 
-import com.sun.net.httpserver.HttpHandler;
-
 import com.github.app.handlers.ConfigurationHandler;
 import com.github.logger.Log;
 import com.github.utils.HttpMethod;
 import com.github.utils.Utils;
+import com.sun.net.httpserver.HttpHandler;
 
 public abstract class ApplicationContext implements ConfigurationHandler {
 
@@ -22,10 +21,8 @@ public abstract class ApplicationContext implements ConfigurationHandler {
     }
 
     public String path() {
-        return getClass().getPackageName()
-                .replace(ApplicationContext.class.getPackageName(), "")
-                .replace(".", "/") + "/" + getClass()
-                .getSimpleName().toLowerCase();
+        return getClass().getPackageName().replace(ApplicationContext.class.getPackageName(), "").replace(".", "/")
+                + "/" + getClass().getSimpleName().toLowerCase();
     }
 
     public HttpHandler handler() {

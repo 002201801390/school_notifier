@@ -6,7 +6,7 @@ import static java.util.logging.Level.WARNING;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
@@ -33,8 +33,8 @@ public class Log {
         // prevent log in console
         Logger rootLogger = Logger.getGlobal();
 
-        List<Handler> handlers = Arrays.asList(rootLogger.getHandlers());
-        List<Handler> consoleHandlers = handlers.stream().filter(h -> h instanceof ConsoleHandler)
+        Collection<Handler> handlers = Arrays.asList(rootLogger.getHandlers());
+        Collection<Handler> consoleHandlers = handlers.stream().filter(h -> h instanceof ConsoleHandler)
                 .collect(Collectors.toList());
 
         for (Handler h : consoleHandlers) {
@@ -133,7 +133,7 @@ public class Log {
             logger = DEFAULT_LOGGER;
         }
 
-        List<Handler> loggerHandlers = Arrays.asList(logger.getHandlers());
+        Collection<Handler> loggerHandlers = Arrays.asList(logger.getHandlers());
 
         logger.setLevel(LOG_LEVEL);
 
