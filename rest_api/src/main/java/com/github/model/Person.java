@@ -4,14 +4,14 @@ import java.time.LocalDate;
 
 public abstract class Person {
 
-    protected int id;
-    protected String name;
-    protected String cpf;
-    protected LocalDate dtBirth;
+    private int id;
+    private String name;
+    private String cpf;
+    private LocalDate dtBirth;
     // TODO: List of e-mails
-    protected String email;
+    private String email;
     // TODO: List of phones
-    protected String phone;
+    private String phone;
 
     /**
      * @return the id
