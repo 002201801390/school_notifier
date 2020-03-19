@@ -7,18 +7,20 @@ import java.sql.SQLException;
 import com.github.logger.Log;
 
 public class DBConnection {
+    private static final DBConnection instance = new DBConnection();
+
     private static final String host = "127.0.0.1";
     private static final String db   = "school_notifier";
     private static final String user = "postgres";
     private static final String pass = "pass";
 
-    private static Connection conn;
+    private Connection conn;
 
     private DBConnection() {
-        throw new AssertionError("No " + DBConnection.class + " instances for you!");
+        super();
     }
 
-    private static void tryToConnect() {
+    private void tryToConnect() {
         String url = "jdbc:postgresql://" + host + "/" + db;
 
         try {
@@ -29,7 +31,7 @@ public class DBConnection {
         }
     }
 
-    public static Connection connection() {
+    public Connection connection() {
         if (conn == null) {
             tryToConnect();
         }
@@ -37,7 +39,7 @@ public class DBConnection {
         return conn;
     }
 
-    public static void closeConnection() {
+    public void closeConnection() {
         try {
             if (conn != null && !conn.isClosed()) {
                 conn.close();
