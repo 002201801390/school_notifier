@@ -36,3 +36,8 @@ docker stop $DOCKER_NAME
 # Para acessar a container
 # P.S. A container deve estar sendo executada
 docker exec -it postgres bash
+
+# FINAL VERSION
+docker run --rm --name postgres -e POSTGRES_PASSWORD=pass -d -p 5432:5432 -v $HOME/docker/volumes/postgres:/var/lib/postgresql/data  postgres
+
+docker exec -it postgres psql -U postgres
