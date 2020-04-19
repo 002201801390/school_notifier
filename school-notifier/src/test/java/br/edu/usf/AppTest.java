@@ -1,4 +1,4 @@
-package br.usf.edu;
+package br.edu.usf;
 
 import org.junit.Test;
 
