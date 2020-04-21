@@ -7,9 +7,11 @@ Integrantes:
 
 <p>Estrutura das pastas:</p>
 / -> Raiz do projeto<br>
- /database -> Arquivos para criar e popular o banco de dados containerizado<br>
- /flutter -> Projeto mobile utilizando o FLutter<br>
- /rest_api -> Código fonte da API REST<br>
-  /src<br>
-   /main/java/com/github/ -> Código fonte das classes java<br>
-   /test/java -> Testes unitários com a biblioteca JUnity<br>
+  /database -> Arquivos para criar e popular o banco de dados containerizado<br>
+  /mobile_app -> Projeto mobile utilizando o FLutter<br>
+    /lib/...<br>
+    /test/...<br>
+  /rest_api -> Código fonte da API REST<br>
+    /src<br>
+      /main/...<br>
+      /test/...<br>
