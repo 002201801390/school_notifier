@@ -1,32 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
-	id="SchoolNotifier" version="4.0">
-	
-	<display-name>SchoolNotifier</display-name>
-	
-	<servlet>
-		<servlet-name>Jersey REST Service</servlet-name>
-		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
-		<init-param>
-			<param-name>jersey.config.server.provider.packages</param-name>
-			<param-value>br.edu.usf</param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	
-	<servlet-mapping>
-		<servlet-name>Jersey REST Service</servlet-name>
-		<url-pattern>/*</url-pattern>
-	</servlet-mapping>
-	
-<!-- 	<welcome-file-list> -->
-<!-- 		<welcome-file>index.html</welcome-file> -->
-<!-- 		<welcome-file>index.htm</welcome-file> -->
-<!-- 		<welcome-file>index.jsp</welcome-file> -->
-<!-- 		<welcome-file>default.html</welcome-file> -->
-<!-- 		<welcome-file>default.htm</welcome-file> -->
-<!-- 		<welcome-file>default.jsp</welcome-file> -->
-<!-- 	</welcome-file-list> -->
+         xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         id="SchoolNotifier" version="4.0">
+
+    <display-name>SchoolNotifier</display-name>
+
+    <servlet>
+        <servlet-name>Jersey REST Service</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>jersey.config.server.provider.packages</param-name>
+            <param-value>br.edu.usf</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Jersey REST Service</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+    <!--    <context-param>-->
+    <!--        <param-name>log4jConfigLocation</param-name>-->
+    <!--        <param-value>/WEB-INF/resource/log4j.properties</param-value>-->
+    <!--    </context-param>-->
+
+    <!--    <listener>-->
+    <!--        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>-->
+    <!--    </listener>-->
+
+    <!-- 	<welcome-file-list> -->
+    <!-- 		<welcome-file>index.html</welcome-file> -->
+    <!-- 		<welcome-file>index.htm</welcome-file> -->
+    <!-- 		<welcome-file>index.jsp</welcome-file> -->
+    <!-- 		<welcome-file>default.html</welcome-file> -->
+    <!-- 		<welcome-file>default.htm</welcome-file> -->
+    <!-- 		<welcome-file>default.jsp</welcome-file> -->
+    <!-- 	</welcome-file-list> -->
 </web-app>

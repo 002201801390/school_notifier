@@ -50,6 +50,8 @@ public class ResponsibleDao implements Dao<Responsible> {
 
     @Override
     public Collection<Responsible> findAll() {
+        logger.info("Searching for all responsible");
+
         String sql = "SELECT id, cpf, name, login, password, email, dt_birth, phone FROM responsible";
 
         try (PreparedStatement s = DBConnection.gi().connection().prepareStatement(sql)) {

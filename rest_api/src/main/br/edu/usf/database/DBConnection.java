@@ -31,9 +31,11 @@ public class DBConnection {
         String url = "jdbc:postgresql://" + host + "/" + db;
 
         try {
+            Class.forName("org.postgresql.Driver");
+
             conn = DriverManager.getConnection(url, user, pass);
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             logger.error("Error to connect with postgres database", e);
         }
     }
