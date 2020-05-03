@@ -9,8 +9,9 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,8 +24,6 @@ public class AuthenticationEndpoint {
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationEndpoint.class);
 
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response authenticateUser(@FormParam("login") String login, @FormParam("password") String password) {
 
         final String userId = authenticate(login, password);

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.Objects;
+import java.util.UUID;
 
 public class TokenUtils {
     private static final Logger logger = LoggerFactory.getLogger(TokenUtils.class);
@@ -26,19 +27,17 @@ public class TokenUtils {
         final String sql = "INSERT into tokens(user_id) VALUES(?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setString(1, userId);
+            statement.setObject(1, UUID.fromString(userId));
 
-            if (!statement.execute()) {
-                throw new SQLException("Error to execute query");
-            }
+            statement.execute();
 
             final ResultSet generatedKeys = statement.getGeneratedKeys();
 
-            if (!generatedKeys.absolute(1)) {
+            if (!generatedKeys.next()) {
                 throw new RuntimeException("Token was not returned");
             }
 
-            return generatedKeys.getString(1);
+            return generatedKeys.getString("token");
 
         } catch (SQLException | RuntimeException e) {
             logger.error("Error to produce and relate token", e);
@@ -84,7 +83,9 @@ public class TokenUtils {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, token);
 
-            return statement.execute();
+            statement.execute();
+
+            return true;
 
         } catch (SQLException e) {
             logger.error("Error to refresh token expire date");
