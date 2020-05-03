@@ -15,7 +15,7 @@ public abstract class LoggablePerson extends Person implements Loggable {
     }
 
     public void setLogin(String login) {
-        if (!InputUtils.validString(email)) {
+        if (!InputUtils.validString(login)) {
             throw new InputMismatchException();
         }
 
@@ -28,7 +28,7 @@ public abstract class LoggablePerson extends Person implements Loggable {
     }
 
     public void setPassword(String password) {
-        if (!InputUtils.validString(email)) {
+        if (!InputUtils.validString(password)) {
             throw new InputMismatchException();
         }
 
