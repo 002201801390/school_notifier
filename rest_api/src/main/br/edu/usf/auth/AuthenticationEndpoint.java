@@ -30,7 +30,7 @@ public class AuthenticationEndpoint {
         if (InputUtils.validString(userId)) {
             logger.debug("User authenticated");
 
-            String token = TokenUtils.generateToken(userId);
+            String token = TokenUtils.getExistingTokenOrCreateOne(userId);
 
             return Response.ok(token).build();
         }

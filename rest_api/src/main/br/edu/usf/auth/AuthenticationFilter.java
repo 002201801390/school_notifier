@@ -2,6 +2,8 @@ package br.edu.usf.auth;
 
 import br.edu.usf.utils.TokenUtils;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Priority;
 import javax.ws.rs.Priorities;
@@ -17,10 +19,12 @@ import java.io.IOException;
 @Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
+
     private static final String AUTHENTICATION_SCHEME = "Token";
 
     @Override
-    public void filter(@NotNull ContainerRequestContext requestContext) throws IOException {
+    public void filter(@NotNull ContainerRequestContext requestContext) {
         final String authHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
 
         try {
@@ -32,6 +36,10 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
             if (!validToken(token)) {
                 throw new RuntimeException("Unauthorized!");
+            }
+
+            if (!TokenUtils.refreshTokenExpireDate(token)) {
+                logger.warn("Cannot refresh token expire date");
             }
 
         } catch (Exception e) {

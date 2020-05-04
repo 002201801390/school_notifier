@@ -17,6 +17,43 @@ public class TokenUtils {
         throw new AssertionError("No " + TokenUtils.class + " instances for you!");
     }
 
+    public static @Nullable String getExistingTokenOrCreateOne(@NotNull String userId) {
+        Objects.requireNonNull(userId, "User ID can't be null");
+
+        final String existingToken = getExistingToken(userId);
+        if (InputUtils.validString(existingToken)) {
+
+            return existingToken;
+        }
+        return generateToken(userId);
+    }
+
+    public static @Nullable String getExistingToken(@NotNull String userId) {
+        Objects.requireNonNull(userId, "User ID can't be null");
+
+        final Connection connection = DBConnection.gi().connection();
+
+        Objects.requireNonNull(connection, "Database connection cannot be null");
+
+        final String sql = "SELECT token FROM tokens WHERE user_id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setObject(1, UUID.fromString(userId));
+
+            if (!statement.execute()) {
+                throw new RuntimeException("Token not found for user");
+            }
+
+            final ResultSet resultSet = statement.getResultSet();
+            if (resultSet.next()) {
+                return resultSet.getString(1);
+            }
+        } catch (SQLException | RuntimeException e) {
+            logger.error("Error to search token from user");
+        }
+        return null;
+    }
+
     public static @Nullable String generateToken(@NotNull String userId) {
         Objects.requireNonNull(userId, "User ID can't be null");
 
@@ -81,7 +118,7 @@ public class TokenUtils {
         final String sql = "UPDATE tokens set dt_expire = now()::date + 30 WHERE token = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, token);
+            statement.setObject(1, UUID.fromString(token));
 
             statement.execute();
 
