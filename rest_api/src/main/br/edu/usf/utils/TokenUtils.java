@@ -53,10 +53,10 @@ public class TokenUtils {
 
         Objects.requireNonNull(connection, "Database connection is null");
 
-        final String sql = "SELECT * FROM tokens WHERE token = ? AND dt_expire < now()";
+        final String sql = "SELECT * FROM tokens WHERE token = ? AND dt_expire > now()";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, token);
+            statement.setObject(1, UUID.fromString(token));
 
             if (!statement.execute()) {
                 throw new SQLException("Error to execute query");

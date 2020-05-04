@@ -22,7 +22,7 @@ VALUES ('61143bcd-2e5f-4ea0-8fb0-fa10aaf044c6', 'ADMIN', 'admin',
 
 CREATE table IF NOT EXISTS tokens
 (
-    token     text not null PRIMARY KEY DEFAULT uuid_generate_v4(),
+    token     uuid not null PRIMARY KEY DEFAULT uuid_generate_v4(),
     dt_expire date not null             DEFAULT now()::date + 30,
     user_id   uuid not null references users (id)
 );

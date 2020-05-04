@@ -1,5 +1,7 @@
 package br.edu.usf.resource;
 
+import br.edu.usf.auth.Secured;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -11,6 +13,7 @@ import java.util.Collection;
 public abstract class DefaultResource<T> {
 
     @POST
+    @Secured
     @Path("/insert")
     @Produces(MediaType.APPLICATION_JSON)
     public final Response insert(T t) {
@@ -20,6 +23,7 @@ public abstract class DefaultResource<T> {
     public abstract boolean insertImpl(T t);
 
     @GET
+    @Secured
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     public final Response findAll() {
@@ -29,6 +33,7 @@ public abstract class DefaultResource<T> {
     public abstract Collection<T> findAllImpl();
 
     @POST
+    @Secured
     @Path("/update")
     @Produces(MediaType.APPLICATION_JSON)
     public final Response update(T t) {
@@ -38,6 +43,7 @@ public abstract class DefaultResource<T> {
     public abstract boolean updateImpl(T t);
 
     @POST
+    @Secured
     @Path("/delete")
     @Produces(MediaType.APPLICATION_JSON)
     public final Response delete(T t) {
