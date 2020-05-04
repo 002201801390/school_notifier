@@ -20,6 +20,11 @@ VALUES ('61143bcd-2e5f-4ea0-8fb0-fa10aaf044c6', 'ADMIN', 'admin',
         '5a11f031c0ec66b75db135c29adab3f00f23ee48e33170cdc3e65f1606685005c1f5922666bc6ac850b3f9f67ca72dd8a9ec3a3438f2e218565970ee04e4eb28',
         'employee');
 
+INSERT INTO users(id, name, login, password, role)
+VALUES ('61143bcd-2e5f-4ea0-8fb0-fa10aaf044c7', 'Eduwardo Horibe', 'edu',
+        'e5607101367cbdb6cea74479fe1983004dc653ccc221bcdf47282605d7494580d81a8b8abfa97c64d080bdfe0ce5054a4e7dc7c6b1b3eb0513d4911dfdf0d5c6',
+        'responsible');
+
 CREATE table IF NOT EXISTS tokens
 (
     token     uuid not null PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -106,3 +111,4 @@ CREATE table IF NOT EXISTS responsible_student
     responsible_id uuid not null references responsible (id)
 );
 */
+
