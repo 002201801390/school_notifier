@@ -69,7 +69,7 @@ public class ResponsibleDao implements Dao<Responsible> {
                 r.setEmail(resultSet.getString("email"));
                 r.setPhone(resultSet.getString("phone"));
 
-                Date dtBirth = resultSet.getDate("dtBirth");
+                Date dtBirth = resultSet.getDate("dt_birth");
                 if (dtBirth != null) {
                     r.setDtBirth(dtBirth.toLocalDate());
                 }

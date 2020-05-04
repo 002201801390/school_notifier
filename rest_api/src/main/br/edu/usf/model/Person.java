@@ -1,9 +1,6 @@
 package br.edu.usf.model;
 
-import br.edu.usf.utils.InputUtils;
-
 import java.time.LocalDate;
-import java.util.InputMismatchException;
 
 public abstract class Person {
 
@@ -27,10 +24,6 @@ public abstract class Person {
     }
 
     public void setName(String name) {
-        if (!InputUtils.validString(name)) {
-            throw new InputMismatchException();
-        }
-
         this.name = name;
     }
 
@@ -55,10 +48,6 @@ public abstract class Person {
     }
 
     public void setEmail(String email) {
-        if (!InputUtils.validString(email)) {
-            throw new InputMismatchException();
-        }
-
         this.email = email;
     }
 
