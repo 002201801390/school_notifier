@@ -1,6 +1,6 @@
 CREATE extension IF NOT EXISTS "uuid-ossp";
 
-CREATE type role AS ENUM ('employee', 'admin_employee', 'student', 'responsible');
+CREATE type role AS ENUM ('admin', 'employee', 'student', 'responsible');
 
 CREATE table IF NOT EXISTS users
 (
@@ -18,7 +18,7 @@ CREATE table IF NOT EXISTS users
 INSERT INTO users(id, name, login, password, role)
 VALUES ('61143bcd-2e5f-4ea0-8fb0-fa10aaf044c6', 'ADMIN', 'admin',
         '5a11f031c0ec66b75db135c29adab3f00f23ee48e33170cdc3e65f1606685005c1f5922666bc6ac850b3f9f67ca72dd8a9ec3a3438f2e218565970ee04e4eb28',
-        'admin_employee');
+        'admin');
 
 INSERT INTO users(id, name, login, password, role)
 VALUES ('61143bcd-2e5f-4ea0-8fb0-fa10aaf044c7', 'Eduwardo Horibe', 'edu',
@@ -36,6 +36,18 @@ CREATE table IF NOT EXISTS tokens
     dt_expire date not null             DEFAULT now()::date + 30,
     user_id   uuid not null references users (id)
 );
+
+CREATE OR REPLACE view admin AS
+SELECT id,
+       name,
+       cpf,
+       dt_birth,
+       email,
+       phone,
+       login,
+       password
+FROM users
+WHERE role = 'admin';
 
 CREATE OR REPLACE view employee AS
 SELECT id,

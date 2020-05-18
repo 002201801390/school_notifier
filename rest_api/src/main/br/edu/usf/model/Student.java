@@ -5,7 +5,7 @@ import java.util.Collection;
 
 public class Student extends LoggablePerson {
 
-    protected Collection<Responsible> responsible = new ArrayList<>();
+    protected final Collection<Responsible> responsible = new ArrayList<>();
 
     public Collection<Responsible> getResponsible() {
         return new ArrayList<>(responsible);
