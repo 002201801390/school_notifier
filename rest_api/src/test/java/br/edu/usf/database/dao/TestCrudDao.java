@@ -1,7 +1,5 @@
 package br.edu.usf.database.dao;
 
-import br.edu.usf.database.DBConnection;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 

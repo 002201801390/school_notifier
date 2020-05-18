@@ -77,7 +77,7 @@ public class Randomization {
         final JsonObject randomPerson = randomPerson();
         final String id = id();
 
-        if (randomPerson != null) {
+        if (randomPerson != null && id != null) {
             final JsonObject login = randomPerson.get("login").getAsJsonObject();
             return AuthenticationUtils.encryptUserPassword(id, login.get("password").getAsString());
         }

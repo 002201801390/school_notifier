@@ -5,7 +5,6 @@ import br.edu.usf.model.LoggablePerson;
 import br.edu.usf.utils.DaoUtils;
 import br.edu.usf.utils.InputUtils;
 import br.edu.usf.utils.UserDaoUtils;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +33,7 @@ public abstract class UserDao<T extends LoggablePerson> implements Dao<T> {
 
         try (PreparedStatement s = DBConnection.gi().connection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            fillInsertStatement(person, s);
+            defaultFillStatement(person, s);
 
             s.execute();
 
@@ -81,7 +80,7 @@ public abstract class UserDao<T extends LoggablePerson> implements Dao<T> {
         final String sql = UserDaoUtils.updateQuery();
 
         try (PreparedStatement s = DBConnection.gi().connection().prepareStatement(sql)) {
-            fillUpdateStatement(person, s);
+            defaultFillStatement(person, s);
             s.setObject(8, UUID.fromString(person.getId()));
 
             s.execute();
@@ -114,17 +113,7 @@ public abstract class UserDao<T extends LoggablePerson> implements Dao<T> {
         return false;
     }
 
-    @Deprecated
-    public final void fillInsertStatement(T person, PreparedStatement statement) throws SQLException {
-        defaultFillStatement(person, statement);
-    }
-
-    @Deprecated
-    public final void fillUpdateStatement(T person, PreparedStatement statement) throws SQLException {
-        defaultFillStatement(person, statement);
-    }
-
-    private void defaultFillStatement(T person, PreparedStatement statement) throws SQLException {
+    protected final void defaultFillStatement(T person, PreparedStatement statement) throws SQLException {
         Objects.requireNonNull(person, "Person cannot be null!");
         Objects.requireNonNull(statement, "Statement cannot be null!");
 
