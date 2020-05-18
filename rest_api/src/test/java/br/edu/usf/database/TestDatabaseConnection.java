@@ -11,8 +11,8 @@ public class TestDatabaseConnection {
         Assertions.assertNotNull(DBConnection.gi().connection(), "Database connection null");
     }
 
-    @AfterAll
-    public static void closeDatabaseConnection() {
-        DBConnection.gi().closeConnection();
-    }
+//    @AfterAll
+//    public static void closeDatabaseConnection() {
+//        DBConnection.gi().closeConnection();
+//    }
 }
