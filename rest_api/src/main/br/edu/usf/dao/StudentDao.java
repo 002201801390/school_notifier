@@ -14,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Collection;
+import java.util.UUID;
 
 public class StudentDao extends UserDao<Student> {
     private static final Logger logger = LoggerFactory.getLogger(ResponsibleDao.class);
@@ -54,6 +55,10 @@ public class StudentDao extends UserDao<Student> {
             return;
         }
 
+        if (responsibles.isEmpty()) {
+            return;
+        }
+
         String sql = "INSERT INTO responsible_student (responsible_id, student_id) VALUES (?, ?)";
 
         try (PreparedStatement s = DBConnection.gi().connection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -79,7 +84,7 @@ public class StudentDao extends UserDao<Student> {
         }
 
         try (PreparedStatement s = DBConnection.gi().connection().prepareStatement(sql)) {
-            s.setString(1, studentId);
+            s.setObject(1, UUID.fromString(studentId));
 
             if (!emptyRelation) {
                 StringBuilder builder = new StringBuilder();

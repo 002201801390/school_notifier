@@ -3,13 +3,11 @@ package br.edu.usf.database.dao;
 import br.edu.usf.dao.EmployeeDao;
 import br.edu.usf.model.Employee;
 import br.edu.usf.utils.Randomization;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.Collection;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TestEmployeeDao extends TestCrudDao {
 
     private static final Employee employee = new Employee();
