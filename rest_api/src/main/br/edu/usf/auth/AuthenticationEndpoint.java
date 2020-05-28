@@ -24,9 +24,9 @@ public class AuthenticationEndpoint {
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationEndpoint.class);
 
     @POST
-    public Response authenticateUser(@FormParam("login") String login, @FormParam("password") String password) {
+    public Response authenticateUser(@FormParam("username") String username, @FormParam("password") String password) {
 
-        final String userId = authenticate(login, password);
+        final String userId = authenticate(username, password);
         if (InputUtils.validString(userId)) {
             logger.debug("User authenticated");
 
@@ -39,16 +39,16 @@ public class AuthenticationEndpoint {
         return Response.status(Response.Status.FORBIDDEN).build();
     }
 
-    private static @Nullable String authenticate(@NotNull String login, @NotNull String password) {
-        Objects.requireNonNull(login, "Login ID can't be null");
-        Objects.requireNonNull(password, "Password ID can't be null");
+    private static @Nullable String authenticate(@NotNull String username, @NotNull String password) {
+        Objects.requireNonNull(username, "Username can't be null");
+        Objects.requireNonNull(password, "Password can't be null");
 
         Connection connection = DBConnection.gi().connection();
 
         final String sql = "SELECT id, password from users WHERE login = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, login);
+            statement.setString(1, username);
 
             final ResultSet resultSet = statement.executeQuery();
             if (!resultSet.next()) {
