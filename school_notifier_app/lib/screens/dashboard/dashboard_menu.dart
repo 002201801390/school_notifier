@@ -28,7 +28,7 @@ class DashboardMenu extends StatelessWidget {
                 return '/' == route.settings.name;
               });
             },
-          )
+          ),
         ],
       ),
     );

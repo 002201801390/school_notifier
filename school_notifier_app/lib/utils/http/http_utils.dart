@@ -7,7 +7,7 @@ import 'package:school_notifier_app/storage/storage.dart';
 class HttpUtils {
   static Future<http.Response> doPost(
       String path, Map body, bool useToken) async {
-    Map headers;
+    Map<String, String> headers;
     if (useToken) {
       final String token = await Storage.read('user.token');
 
