@@ -29,7 +29,7 @@ Curso: Análise e Desenvolvimento de Sistemas [ADS]
  * Servidor de aplicação `Tomcat`;
 
 ##### Unix:
- * Rode o arquivo `setup.sh` e seja feliz ;)
+ * Rode o arquivo `setup.sh` passando o caminho do arquivo `catalina.sh` e da pasta `webapps` nessa sequência e seja feliz ;)
 
 ##### Windows:
  * Rode as os comandos do arquivo `database/configure_database.sql` no Postgres
