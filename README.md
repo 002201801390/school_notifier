@@ -27,18 +27,18 @@ Curso: Análise e Desenvolvimento de Sistemas [ADS]
 
 ##### Pré-requisitos:
  * JDK 11 instalado
+ * Servidor de aplicação `Tomcat 9`
  * Banco de dados `Postgres` instalado, rodando com a porta `5432` exposta, senha `pass` para o usuário `postgres`
    e com uma nova base de dados com o nome `school_notifier`, executando `CREATE DATABASE school_notifier`
    * Caso o seu sistema seja Unix, para criar o banco de dados conteinerizado com as especificações citadas,
      execute o script `database/docker_postgres.sh`
- * Servidor de aplicação `Tomcat 9`
  * Para sistemas Unix:
     * Maven instalado, e configurado para utilizar a JDK 11. A saída para o comando `mvn --version` deve indicar algo como
       `Java version: 11.X.X`. Caso o maven esteja utilizando uma versão mais antiga da JDK, adicione `JAVA_HOME` indicando
       o diretório da JDK 11 e `JAVACMD` indicando `$JAVA_HOME/bin/java` como variáveis de ambiente no seu sistema.
 
 ##### Unix:
- * Rode o arquivo `setup.sh` passando o caminho do arquivo `catalina.sh` e da pasta `webapps` nessa sequência e seja feliz ;)
+ * Dentro do diretório do projeto, rode o arquivo `setup.sh` passando o caminho do arquivo `catalina.sh` e da pasta `webapps` nessa sequência e seja feliz ;)
  <pre>$ ./setup.sh $CATALINA_PATH $WEBAPPS_PATH</pre>
 
 ##### Windows:
