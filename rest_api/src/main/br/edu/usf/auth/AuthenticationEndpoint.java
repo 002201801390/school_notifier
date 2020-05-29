@@ -24,9 +24,11 @@ public class AuthenticationEndpoint {
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationEndpoint.class);
 
     @POST
-    public Response authenticateUser(@FormParam("username") String username, @FormParam("password") String password) {
+    public Response authenticateUser(@FormParam("username") String username,
+                                     @FormParam("password") String password,
+                                     @FormParam("module")   String module) {
 
-        final String userId = authenticate(username, password);
+        final String userId = authenticate(username, password, module);
         if (InputUtils.validString(userId)) {
             logger.debug("User authenticated");
 
@@ -35,17 +37,17 @@ public class AuthenticationEndpoint {
             return Response.ok(token).build();
         }
 
-        logger.debug("Invalid credentials");
+        logger.debug("Access denied!");
         return Response.status(Response.Status.FORBIDDEN).build();
     }
 
-    private static @Nullable String authenticate(@NotNull String username, @NotNull String password) {
+    private static @Nullable String authenticate(@NotNull String username, @NotNull String password, @NotNull String module) {
         Objects.requireNonNull(username, "Username can't be null");
         Objects.requireNonNull(password, "Password can't be null");
 
         Connection connection = DBConnection.gi().connection();
 
-        final String sql = "SELECT id, password from users WHERE username = ?";
+        final String sql = "SELECT id, password, role from users WHERE username = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, username);
@@ -57,10 +59,11 @@ public class AuthenticationEndpoint {
 
             final String userId = resultSet.getString("id");
             final String pass = resultSet.getString("password");
+            final String role = resultSet.getString("role");
 
             final String encryptPass = AuthenticationUtils.encryptUserPassword(userId, password);
 
-            if (Objects.equals(pass, encryptPass)) {
+            if (Objects.equals(pass, encryptPass) && userCanAccessModule(module, role)) {
                 return userId;
             }
         } catch (SQLException | RuntimeException e) {
@@ -68,5 +71,14 @@ public class AuthenticationEndpoint {
         }
 
         return null;
+    }
+
+    private static boolean userCanAccessModule(@NotNull String module, @NotNull String role) {
+        switch (role) {
+            case "responsible":
+            case "student":
+                return module.equalsIgnoreCase("mobile");
+        }
+        return false;
     }
 }
