@@ -64,11 +64,11 @@ public class Randomization {
         return null;
     }
 
-    public static @Nullable String login() {
+    public static @Nullable String username() {
         final JsonObject randomPerson = randomPerson();
         if (randomPerson != null) {
-            final JsonObject login = randomPerson.get("login").getAsJsonObject();
-            return login.get("username").getAsString();
+            final JsonObject username = randomPerson.get("login").getAsJsonObject();
+            return username.get("username").getAsString();
         }
         return null;
     }
@@ -78,8 +78,8 @@ public class Randomization {
         final String id = id();
 
         if (randomPerson != null && id != null) {
-            final JsonObject login = randomPerson.get("login").getAsJsonObject();
-            return AuthenticationUtils.encryptUserPassword(id, login.get("password").getAsString());
+            final JsonObject username = randomPerson.get("login").getAsJsonObject();
+            return AuthenticationUtils.encryptUserPassword(id, username.get("password").getAsString());
         }
         return null;
     }
@@ -139,7 +139,7 @@ public class Randomization {
         person.setDtBirth(Randomization.dtBirth());
         person.setEmail(Randomization.email());
         person.setPhone(Randomization.phone());
-        person.setLogin(Randomization.login());
+        person.setUsername(Randomization.username());
         person.setPassword(Randomization.password());
     }
 }

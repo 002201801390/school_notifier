@@ -1,6 +1,7 @@
 package br.edu.usf.utils;
 
 import br.edu.usf.database.DBConnection;
+import br.edu.usf.model.LoggablePerson;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -129,5 +130,30 @@ public class TokenUtils {
         }
 
         return false;
+    }
+
+    public static LoggablePerson getUserByToken(String token) {
+        Objects.requireNonNull(token, "Token can't be null");
+
+        Connection connection = DBConnection.gi().connection();
+
+        Objects.requireNonNull(connection, "Database connection is null");
+
+        final String sql = "SELECT * FROM users u INNER JOIN tokens t ON u.id = t.user_id WHERE token = ? ";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setObject(1, UUID.fromString(token));
+
+            statement.execute();
+
+            final ResultSet resultSet = statement.getResultSet();
+            if (resultSet.next()) {
+                return LoggablePerson.fromResultSet(resultSet);
+            }
+
+        } catch (SQLException e) {
+            logger.error("Error to refresh token expire date");
+        }
+        return null;
     }
 }

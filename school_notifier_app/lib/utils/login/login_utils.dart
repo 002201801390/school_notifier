@@ -16,6 +16,8 @@ class LoginUtils {
           await HttpUtils.doPost('/auth', credentials, false);
 
       if (response.statusCode == 200) {
+        _updateUserCredentials();
+
         return response.body;
       }
     } on Exception catch (e) {
@@ -44,5 +46,18 @@ class LoginUtils {
 
   static void resetToken() {
     Storage.remove('user.token');
+  }
+
+  static void _updateUserCredentials() async {
+    await Storage.remove('user.credentials');
+
+    if (await savedTokenIsValid()) {
+      http.Response response =
+          await HttpUtils.doPost('/credentials', null, true);
+
+      if (response.statusCode == 200) {
+        await Storage.save('user.credentials', response.body);
+      }
+    }
   }
 }

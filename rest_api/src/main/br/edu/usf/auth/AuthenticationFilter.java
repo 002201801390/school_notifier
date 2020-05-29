@@ -1,5 +1,6 @@
 package br.edu.usf.auth;
 
+import br.edu.usf.model.LoggablePerson;
 import br.edu.usf.utils.TokenUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -40,6 +41,12 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             if (!TokenUtils.refreshTokenExpireDate(token)) {
                 logger.warn("Cannot refresh token expire date");
             }
+
+            final LoggablePerson userByToken = TokenUtils.getUserByToken(token);
+
+            javax.ws.rs.core.SecurityContext securityContext = requestContext.getSecurityContext();
+
+            requestContext.setSecurityContext(new br.edu.usf.auth.SecurityContext(securityContext, userByToken, AUTHENTICATION_SCHEME));
 
         } catch (Exception e) {
             unauthorized(requestContext);

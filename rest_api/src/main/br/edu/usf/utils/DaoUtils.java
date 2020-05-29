@@ -17,6 +17,10 @@ public class DaoUtils {
     }
 
     public static java.time.LocalDate stringToLocalDate(String date) {
+        if (date == null) {
+            return null;
+        }
+
         Instant instant = Instant.parse(date);
         LocalDateTime result = LocalDateTime.ofInstant(instant, ZoneId.of(ZoneOffset.UTC.getId()));
 

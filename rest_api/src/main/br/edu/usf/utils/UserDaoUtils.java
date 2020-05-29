@@ -13,15 +13,15 @@ public class UserDaoUtils {
     }
 
     public static String insertQuery(String role) {
-        return "INSERT INTO users (cpf, name, login, password, email, dt_birth, phone, role) VALUES(?, ?, ?, ?, ?, ?, ?, '" + role + "')";
+        return "INSERT INTO users (cpf, name, username, password, email, dt_birth, phone, role) VALUES(?, ?, ?, ?, ?, ?, ?, '" + role + "')";
     }
 
     public static String selectQuery(String role) {
-        return "SELECT id, cpf, name, login, password, email, dt_birth, phone FROM " + role;
+        return "SELECT id, cpf, name, username, password, email, dt_birth, phone FROM " + role;
     }
 
     public static String updateQuery() {
-        return "UPDATE users set cpf = ?, name = ?, login = ?, password = ?, email = ?, dt_birth = ?, phone = ? WHERE id = ?";
+        return "UPDATE users set cpf = ?, name = ?, username = ?, password = ?, email = ?, dt_birth = ?, phone = ? WHERE id = ?";
     }
 
     public static String deleteQuery() {
@@ -35,7 +35,7 @@ public class UserDaoUtils {
         person.setId(resultSet.getString("id"));
         person.setCpf(resultSet.getString("cpf"));
         person.setName(resultSet.getString("name"));
-        person.setLogin(resultSet.getString("login"));
+        person.setUsername(resultSet.getString("username"));
         person.setPassword(resultSet.getString("password"));
         person.setEmail(resultSet.getString("email"));
         person.setPhone(resultSet.getString("phone"));

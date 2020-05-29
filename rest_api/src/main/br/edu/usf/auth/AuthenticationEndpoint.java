@@ -45,7 +45,7 @@ public class AuthenticationEndpoint {
 
         Connection connection = DBConnection.gi().connection();
 
-        final String sql = "SELECT id, password from users WHERE login = ?";
+        final String sql = "SELECT id, password from users WHERE username = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, username);

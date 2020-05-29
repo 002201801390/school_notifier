@@ -119,7 +119,7 @@ public abstract class UserDao<T extends LoggablePerson> implements Dao<T> {
 
         statement.setString(1, person.getCpf());
         statement.setString(2, person.getName());
-        statement.setString(3, person.getLogin());
+        statement.setString(3, person.getUsername());
         statement.setString(4, person.getPassword());
         statement.setString(5, person.getEmail());
         statement.setDate(6, DaoUtils.convertDateField(person.getDtBirth()));
