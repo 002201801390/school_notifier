@@ -75,19 +75,19 @@ class Login extends StatelessWidget {
     }
 
     Future<String> response = LoginUtils.login(username, password);
-    response.then((token) {
-      if (LoginUtils.validToken(token)) {
+    response.then((token) async {
+      if (await LoginUtils.validToken(token)) {
         LoginUtils.saveToken(token);
 
         Navigator.pushNamed(context, '/dashboard');
 
         debugPrint('Login done successfully');
       } else {
+        debugPrint('Invalid credentials to login');
         showDialog(
           context: context,
           builder: (_) => _alertDialog(context, 'Credênciais inválidas'),
         );
-        debugPrint('Error to make login');
       }
     });
   }

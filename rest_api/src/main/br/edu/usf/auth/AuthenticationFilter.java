@@ -22,10 +22,12 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
 
     private static final String AUTHENTICATION_SCHEME = "Token";
+    private static final String MODULE_HEADER = "Module";
 
     @Override
     public void filter(@NotNull ContainerRequestContext requestContext) {
         final String authHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+        final String moduleHeader = requestContext.getHeaderString(MODULE_HEADER);
 
         try {
             if (!isTokenBasedAuthentication(authHeader)) {
@@ -33,8 +35,9 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             }
 
             final String token = authHeader.substring(AUTHENTICATION_SCHEME.length()).trim();
+            final String module = moduleHeader.substring(MODULE_HEADER.length()).trim();
 
-            if (!validToken(token)) {
+            if (!TokenUtils.validateToken(token, module)) {
                 throw new RuntimeException("Unauthorized!");
             }
 
@@ -55,10 +58,6 @@ public class AuthenticationFilter implements ContainerRequestFilter {
 
     private static boolean isTokenBasedAuthentication(String authHeader) {
         return authHeader != null && authHeader.toLowerCase().startsWith(AUTHENTICATION_SCHEME.toLowerCase() + " ");
-    }
-
-    private static boolean validToken(String token) {
-        return TokenUtils.validateToken(token);
     }
 
     private static void unauthorized(@NotNull ContainerRequestContext requestContext) {

@@ -1,6 +1,7 @@
 CREATE extension IF NOT EXISTS "uuid-ossp";
 
 CREATE type role AS ENUM ('admin', 'employee', 'student', 'responsible');
+CREATE type module AS ENUM ('mobile', 'web');
 
 CREATE table IF NOT EXISTS users
 (
@@ -32,9 +33,10 @@ VALUES ('61143bcd-2e5f-4ea0-8fb0-fa10aaf044c8', 'Rodrigo Brossi', 'brossi',
 
 CREATE table IF NOT EXISTS tokens
 (
-    token     uuid not null PRIMARY KEY DEFAULT uuid_generate_v4(),
-    dt_expire date not null             DEFAULT now()::date + 30,
-    user_id   uuid not null references users (id)
+    token     uuid   not null PRIMARY KEY DEFAULT uuid_generate_v4(),
+    dt_expire date   not null             DEFAULT now()::date + 30,
+    user_id   uuid   not null references users (id),
+    module    module not null
 );
 
 CREATE OR REPLACE view admin AS

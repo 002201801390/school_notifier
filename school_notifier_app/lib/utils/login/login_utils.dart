@@ -35,8 +35,13 @@ class LoginUtils {
     return await Storage.read('user.token');
   }
 
-  static bool validToken(String token) {
-    return token != null && token.isNotEmpty;
+  static Future<bool> validToken(String token) async {
+    if (token == null || token.isNotEmpty) {
+      return false;
+    }
+
+    http.Response response = await HttpUtils.doPost('/auth/check', null, true);
+    return response.statusCode == 200;
   }
 
   static Future<bool> savedTokenIsValid() async {

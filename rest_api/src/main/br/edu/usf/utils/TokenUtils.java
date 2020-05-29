@@ -18,28 +18,29 @@ public class TokenUtils {
         throw new AssertionError("No " + TokenUtils.class + " instances for you!");
     }
 
-    public static @Nullable String getExistingTokenOrCreateOne(@NotNull String userId) {
+    public static @Nullable String getExistingTokenOrCreateOne(@NotNull String userId, @NotNull String module) {
         Objects.requireNonNull(userId, "User ID can't be null");
 
-        final String existingToken = getExistingToken(userId);
+        final String existingToken = getExistingToken(userId, module);
         if (InputUtils.validString(existingToken)) {
 
             return existingToken;
         }
-        return generateToken(userId);
+        return generateToken(userId, module);
     }
 
-    public static @Nullable String getExistingToken(@NotNull String userId) {
+    public static @Nullable String getExistingToken(@NotNull String userId, @NotNull String module) {
         Objects.requireNonNull(userId, "User ID can't be null");
 
         final Connection connection = DBConnection.gi().connection();
 
         Objects.requireNonNull(connection, "Database connection cannot be null");
 
-        final String sql = "SELECT token FROM tokens WHERE user_id = ?";
+        final String sql = "SELECT token FROM tokens WHERE user_id = ? AND module = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setObject(1, UUID.fromString(userId));
+            statement.setString(2, module);
 
             if (!statement.execute()) {
                 throw new RuntimeException("Token not found for user");
@@ -55,17 +56,18 @@ public class TokenUtils {
         return null;
     }
 
-    public static @Nullable String generateToken(@NotNull String userId) {
+    public static @Nullable String generateToken(@NotNull String userId, @NotNull String module) {
         Objects.requireNonNull(userId, "User ID can't be null");
 
         final Connection connection = DBConnection.gi().connection();
 
         Objects.requireNonNull(connection, "Database connection cannot be null");
 
-        final String sql = "INSERT into tokens(user_id) VALUES(?)";
+        final String sql = "INSERT into tokens(user_id, module) VALUES(?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setObject(1, UUID.fromString(userId));
+            statement.setString(2, module);
 
             statement.execute();
 
@@ -84,17 +86,18 @@ public class TokenUtils {
         return null;
     }
 
-    public static boolean validateToken(@NotNull String token) {
+    public static boolean validateToken(@NotNull String token, @NotNull String module) {
         Objects.requireNonNull(token, "Token cannot be null");
 
         final Connection connection = DBConnection.gi().connection();
 
         Objects.requireNonNull(connection, "Database connection is null");
 
-        final String sql = "SELECT * FROM tokens WHERE token = ? AND dt_expire > now()";
+        final String sql = "SELECT * FROM tokens WHERE token = ? AND module = ? AND dt_expire > now()";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setObject(1, UUID.fromString(token));
+            statement.setString(2, module);
 
             if (!statement.execute()) {
                 throw new SQLException("Error to execute query");
@@ -155,5 +158,20 @@ public class TokenUtils {
             logger.error("Error to refresh token expire date");
         }
         return null;
+    }
+
+    public static void cleanExpiredTokens() {
+        Connection connection = DBConnection.gi().connection();
+
+        Objects.requireNonNull(connection, "Database connection is null");
+
+        final String sql = "DELETE FROM tokens WHERE dt_expire < now()";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.execute();
+
+        } catch (SQLException e) {
+            logger.error("Error to refresh token expire date");
+        }
     }
 }

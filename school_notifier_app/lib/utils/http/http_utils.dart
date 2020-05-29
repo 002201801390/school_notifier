@@ -13,6 +13,7 @@ class HttpUtils {
 
       headers = Map();
       headers['Authorization'] = 'Token $token';
+      headers['Module'] = 'Module ${Settings.APP_MODULE_NAME}';
     }
 
     return http.post(

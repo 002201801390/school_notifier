@@ -32,13 +32,20 @@ public class AuthenticationEndpoint {
         if (InputUtils.validString(userId)) {
             logger.debug("User authenticated");
 
-            String token = TokenUtils.getExistingTokenOrCreateOne(userId);
+            String token = TokenUtils.getExistingTokenOrCreateOne(userId, module);
 
             return Response.ok(token).build();
         }
 
         logger.debug("Access denied!");
         return Response.status(Response.Status.FORBIDDEN).build();
+    }
+
+    @POST
+    @Secured
+    @Path("/check")
+    public Response checkAuthentication() {
+        return Response.ok().build();
     }
 
     private static @Nullable String authenticate(@NotNull String username, @NotNull String password, @NotNull String module) {
