@@ -33,8 +33,11 @@ public class AuthenticationEndpoint {
             logger.debug("User authenticated");
 
             String token = TokenUtils.getExistingTokenOrCreateOne(userId, module);
-
-            return Response.ok(token).build();
+            if (InputUtils.validString(token)) {
+                return Response.ok(token).build();
+            }
+            logger.debug("Error to get/generate token");
+            return Response.serverError().build();
         }
 
         logger.debug("Access denied!");
@@ -48,9 +51,10 @@ public class AuthenticationEndpoint {
         return Response.ok().build();
     }
 
-    private static @Nullable String authenticate(@NotNull String username, @NotNull String password, @NotNull String module) {
+    private static @Nullable String authenticate(String username, String password, String module) {
         Objects.requireNonNull(username, "Username can't be null");
         Objects.requireNonNull(password, "Password can't be null");
+        Objects.requireNonNull(module, "Module can't be null");
 
         Connection connection = DBConnection.gi().connection();
 
@@ -85,6 +89,10 @@ public class AuthenticationEndpoint {
             case "responsible":
             case "student":
                 return module.equalsIgnoreCase("mobile");
+
+            // TODO: REMOVE
+            case "admin":
+                return true;
         }
         return false;
     }
