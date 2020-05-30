@@ -74,11 +74,9 @@ class Login extends StatelessWidget {
       return;
     }
 
-    Future<String> response = LoginUtils.login(username, password);
-    response.then((token) async {
-      if (await LoginUtils.validToken(token)) {
-        LoginUtils.saveToken(token);
-
+    Future<bool> response = LoginUtils.login(username, password);
+    response.then((validToken) async {
+      if (validToken) {
         Navigator.pushNamed(context, '/dashboard');
 
         debugPrint('Login done successfully');
