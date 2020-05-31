@@ -10,7 +10,8 @@ class Settings {
   }
 
   static String serverAddress() {
-    return '10.0.2.2';
+//    return '10.0.2.2';
+    return '192.168.0.117';
   }
 
   static String serverPort() {

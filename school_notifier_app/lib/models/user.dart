@@ -7,6 +7,11 @@ class User {
   String phone;
   String username;
   String password;
+  String role;
+
+
+  User({this.id, this.name, this.cpf, this.dtBirth, this.email, this.phone,
+      this.username, this.password, this.role});
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -17,6 +22,7 @@ class User {
         'phone': phone,
         'username': username,
         'password': password,
+        'role': role,
       };
 
   @override
@@ -28,5 +34,6 @@ class User {
         email = json['email'],
         phone = json['phone'],
         username = json['username'],
-        password = json['password'];
+        password = json['password'],
+        role = json['role'];
 }

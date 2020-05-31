@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:school_notifier_app/screens/dashboard/dashboard.dart';
+import 'package:school_notifier_app/screens/dashboard/student/student.dart';
 import 'package:school_notifier_app/screens/login.dart';
 import 'package:school_notifier_app/screens/showcase.dart';
 import 'package:school_notifier_app/utils/login/login_utils.dart';
@@ -30,6 +31,7 @@ class SchoolNotifierApp extends StatelessWidget {
       '/': (context) => Showcase(),
       '/login': (context) => Login(),
       '/dashboard': (context) => Dashboard(),
+      '/dashboard/student': (context) => Student(),
     };
   }
 }

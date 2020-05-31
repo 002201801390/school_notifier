@@ -1,5 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:school_notifier_app/models/user.dart';
 import 'package:school_notifier_app/settings/settings.dart';
 import 'package:school_notifier_app/storage/storage.dart';
 import 'package:school_notifier_app/utils/http/http_utils.dart';
@@ -17,6 +20,7 @@ class LoginUtils {
 
       if (response.statusCode == 200) {
         String token = response.body;
+
         saveToken(token);
 
         _updateUserCredentials();
@@ -30,8 +34,8 @@ class LoginUtils {
     return null;
   }
 
-  static void saveToken(String token) {
-    Storage.save('user.token', token);
+  static void saveToken(String token) async {
+    await Storage.save('user.token', token);
   }
 
   static Future<String> readToken() async {
@@ -52,13 +56,11 @@ class LoginUtils {
     return validToken(token);
   }
 
-  static void resetToken() {
-    Storage.remove('user.token');
+  static void resetToken() async {
+    await Storage.remove('user.token');
   }
 
   static void _updateUserCredentials() async {
-    await Storage.remove('user.credentials');
-
     if (await savedTokenIsValid()) {
       http.Response response =
           await HttpUtils.doPost('/credentials', null, true);
@@ -66,6 +68,22 @@ class LoginUtils {
       if (response.statusCode == 200) {
         await Storage.save('user.credentials', response.body);
       }
+    } else {
+      await Storage.remove('user.credentials');
     }
+  }
+
+  static Future<User> loggedUserCredentials() async {
+    if (!await savedTokenIsValid()) {
+      return null;
+    }
+
+    final String userJson = await Storage.read('user.credentials');
+    if (userJson == null || userJson.isEmpty) {
+      return null;
+    }
+
+    final User user = User.fromJson(jsonDecode(userJson));
+    return user;
   }
 }

@@ -7,6 +7,22 @@ import 'package:school_notifier_app/storage/storage.dart';
 class HttpUtils {
   static Future<http.Response> doPost(
       String path, Map body, bool useToken) async {
+    return http.post(
+      '${Settings.serverURL()}$path',
+      headers: await _headers(useToken),
+      body: body,
+      encoding: Encoding.getByName('UTF-8'),
+    );
+  }
+
+  static Future<http.Response> doGet(String path, bool useToken) async {
+    return http.get(
+      '${Settings.serverURL()}$path',
+      headers: await _headers(useToken),
+    );
+  }
+
+  static Future<Map<String, String>> _headers(bool useToken) async {
     Map<String, String> headers;
     if (useToken) {
       final String token = await Storage.read('user.token');
@@ -15,12 +31,6 @@ class HttpUtils {
       headers['Authorization'] = 'Token $token';
       headers['Module'] = 'Module ${Settings.APP_MODULE_NAME}';
     }
-
-    return http.post(
-      '${Settings.serverURL()}$path',
-      headers: headers,
-      body: body,
-      encoding: Encoding.getByName('UTF-8'),
-    );
+    return headers;
   }
 }
