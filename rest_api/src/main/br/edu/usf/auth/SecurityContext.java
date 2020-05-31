@@ -27,7 +27,7 @@ public class SecurityContext implements javax.ws.rs.core.SecurityContext {
 
     @Override
     public boolean isUserInRole(String role) {
-        return true;
+        return role.equalsIgnoreCase(loggablePerson.role);
     }
 
     @Override

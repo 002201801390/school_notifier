@@ -29,4 +29,9 @@ public class Responsible extends LoggablePerson {
     public void removeStudent(Student s) {
         students.remove(s);
     }
+
+    @Override
+    protected String defineRole() {
+        return "responsible";
+    }
 }

@@ -13,4 +13,9 @@ public class AdminEmployee extends Employee {
         fillPersonDefaultImpl(resultSet, adminEmployee);
         return adminEmployee;
     }
+
+    @Override
+    protected String defineRole() {
+        return "admin";
+    }
 }

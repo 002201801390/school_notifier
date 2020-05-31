@@ -9,6 +9,8 @@ import java.util.Objects;
 
 public abstract class LoggablePerson extends Person implements Loggable, Principal {
 
+    public final String role = defineRole();
+
     protected String username;
     protected String password;
 
@@ -64,4 +66,5 @@ public abstract class LoggablePerson extends Person implements Loggable, Princip
         loggable.setPassword(resultSet.getString("password"));
     }
 
+    protected abstract String defineRole();
 }

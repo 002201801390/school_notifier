@@ -13,7 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.UUID;
 
 public class StudentDao extends UserDao<Student> {
@@ -46,6 +48,30 @@ public class StudentDao extends UserDao<Student> {
             relateResponsibleWithStudents(student.getId(), student.getResponsible());
         }
         return update;
+    }
+
+    public Collection<Student> relatedTo(Responsible responsible) {
+        Objects.requireNonNull(responsible, "Responsible cannot be null");
+
+        final String sql = "SELECT * FROM student s INNER JOIN responsible_student rs on s.id = rs.student_id AND rs.responsible_id = ?";
+        try (PreparedStatement s = DBConnection.gi().connection().prepareStatement(sql)) {
+            s.setObject(1, UUID.fromString(responsible.getId()));
+
+            ResultSet resultSet = s.executeQuery();
+
+            Collection<Student> students = new ArrayList<>();
+
+            while (resultSet.next()) {
+                Student student = resultSetToPerson(resultSet);
+                students.add(student);
+            }
+
+            return students;
+
+        } catch (SQLException e) {
+            logger.error("Error to search students related to a responsible");
+        }
+        return null;
     }
 
     private void relateResponsibleWithStudents(String studentId, Collection<Responsible> responsibles) {

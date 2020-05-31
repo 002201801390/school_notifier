@@ -13,4 +13,9 @@ public class Employee extends LoggablePerson {
         fillPersonDefaultImpl(resultSet, employee);
         return employee;
     }
+
+    @Override
+    protected String defineRole() {
+        return "employee";
+    }
 }
