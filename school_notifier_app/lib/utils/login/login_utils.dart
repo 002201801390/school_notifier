@@ -31,7 +31,7 @@ class LoginUtils {
       debugPrint('Error to make login: $e');
     }
 
-    return null;
+    return false;
   }
 
   static void saveToken(String token) async {
