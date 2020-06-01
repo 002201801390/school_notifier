@@ -65,7 +65,6 @@ public class StudentDao extends UserDao<Student> {
                 Student student = resultSetToPerson(resultSet);
                 students.add(student);
             }
-
             return students;
 
         } catch (SQLException e) {

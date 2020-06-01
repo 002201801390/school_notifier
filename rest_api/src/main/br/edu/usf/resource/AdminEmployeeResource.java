@@ -28,4 +28,9 @@ public class AdminEmployeeResource extends DefaultResource<AdminEmployee> {
     public boolean deleteImpl(AdminEmployee adminEmployee) {
         return AdminEmployeeDao.gi().update(adminEmployee);
     }
+
+    @Override
+    protected AdminEmployee convertInput(String input) {
+        return AdminEmployee.fromJson(input);
+    }
 }

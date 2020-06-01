@@ -12,7 +12,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.UUID;
 
 public class ResponsibleDao extends UserDao<Responsible> {
@@ -119,5 +121,28 @@ public class ResponsibleDao extends UserDao<Responsible> {
     @Override
     public String role() {
         return "responsible";
+    }
+
+    public Collection<Responsible> relatedTo(Student student) {
+        Objects.requireNonNull(student, "Student cannot be null");
+
+        final String sql = "SELECT * FROM responsible r INNER JOIN responsible_student rs on r.id = rs.responsible_id AND rs.student_id = ?";
+        try (PreparedStatement s = DBConnection.gi().connection().prepareStatement(sql)) {
+            s.setObject(1, UUID.fromString(student.getId()));
+
+            ResultSet resultSet = s.executeQuery();
+
+            Collection<Responsible> responsibles = new ArrayList<>();
+
+            while (resultSet.next()) {
+                Responsible responsible = resultSetToPerson(resultSet);
+                responsibles.add(responsible);
+            }
+            return responsibles;
+
+        } catch (SQLException e) {
+            logger.error("Error to search students related to a responsible");
+        }
+        return null;
     }
 }

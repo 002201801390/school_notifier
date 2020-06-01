@@ -2,6 +2,7 @@ package br.edu.usf.resource;
 
 import br.edu.usf.auth.Secured;
 import br.edu.usf.dao.StudentDao;
+import br.edu.usf.enums.ROLE;
 import br.edu.usf.model.LoggablePerson;
 import br.edu.usf.model.Responsible;
 import br.edu.usf.model.Student;
@@ -38,8 +39,13 @@ public class StudentResource extends DefaultResource<Student> {
         return StudentDao.gi().update(student);
     }
 
+    @Override
+    protected Student convertInput(String input) {
+        return Student.fromJson(input);
+    }
+
     @POST
-    @Secured
+    @Secured({ROLE.ADMIN, ROLE.EMPLOYEE, ROLE.RESPONSIBLE})
     @Path("/my")
     @Produces(MediaType.APPLICATION_JSON)
     public Response myStudents(@Context SecurityContext context) {

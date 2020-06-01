@@ -1,5 +1,7 @@
 package br.edu.usf.model;
 
+import com.google.gson.Gson;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,6 +18,10 @@ public class Student extends LoggablePerson {
         final Student student = new Student();
         fillPersonDefaultImpl(resultSet, student);
         return student;
+    }
+
+    public static Student fromJson(String json) {
+        return new Gson().fromJson(json, Student.class);
     }
 
     public Collection<Responsible> getResponsible() {

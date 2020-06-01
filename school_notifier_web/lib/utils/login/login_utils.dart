@@ -1,0 +1,89 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:school_notifier_web/models/user.dart';
+import 'package:school_notifier_web/settings/settings.dart';
+import 'package:school_notifier_web/storage/storage.dart';
+import 'package:school_notifier_web/utils/http/http_utils.dart';
+
+class LoginUtils {
+  static Future<bool> login(String username, String password) async {
+    final Map credentials = Map();
+    credentials['module'] = Settings.APP_MODULE_NAME;
+    credentials['username'] = username;
+    credentials['password'] = password;
+
+    try {
+      http.Response response =
+          await HttpUtils.doPost('/auth', credentials, false);
+
+      if (response.statusCode == 200) {
+        String token = response.body;
+
+        saveToken(token);
+
+        _updateUserCredentials();
+
+        return true;
+      }
+    } on Exception catch (e) {
+      debugPrint('Error to make login: $e');
+    }
+
+    return false;
+  }
+
+  static void saveToken(String token) async {
+    await Storage.save('user.token', token);
+  }
+
+  static Future<String> readToken() async {
+    return await Storage.read('user.token');
+  }
+
+  static Future<bool> validToken(String token) async {
+    if (token == null || token.isEmpty) {
+      return false;
+    }
+
+    http.Response response = await HttpUtils.doPost('/auth/check', null, true);
+    return response.statusCode == 200;
+  }
+
+  static Future<bool> savedTokenIsValid() async {
+    final String token = await readToken();
+    return validToken(token);
+  }
+
+  static void resetToken() async {
+    await Storage.remove('user.token');
+  }
+
+  static void _updateUserCredentials() async {
+    if (await savedTokenIsValid()) {
+      http.Response response =
+          await HttpUtils.doPost('/credentials', null, true);
+
+      if (response.statusCode == 200) {
+        await Storage.save('user.credentials', response.body);
+      }
+    } else {
+      await Storage.remove('user.credentials');
+    }
+  }
+
+  static Future<User> loggedUserCredentials() async {
+    if (!await savedTokenIsValid()) {
+      return null;
+    }
+
+    final String userJson = await Storage.read('user.credentials');
+    if (userJson == null || userJson.isEmpty) {
+      return null;
+    }
+
+    final User user = User.fromJson(jsonDecode(userJson));
+    return user;
+  }
+}

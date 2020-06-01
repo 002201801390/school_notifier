@@ -28,4 +28,9 @@ public class EmployeeResource extends DefaultResource<Employee> {
     public boolean deleteImpl(Employee employee) {
         return EmployeeDao.gi().update(employee);
     }
+
+    @Override
+    protected Employee convertInput(String input) {
+        return Employee.fromJson(input);
+    }
 }
