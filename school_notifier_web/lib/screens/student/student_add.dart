@@ -21,17 +21,17 @@ class StudentAdd extends StatelessWidget {
         child: Column(
           children: [
             TextComponents.textField(
-              'Nome',
+              label: 'Nome',
               controller: _nameController,
               validator: _nameValidator,
             ),
             TextComponents.textField(
-              'Usuário',
+              label: 'Usuário',
               controller: _usernameController,
               validator: _usernameValidator,
             ),
             TextComponents.textField(
-              'Senha',
+              label: 'Senha',
               controller: _passwordController,
               validator: _passwordValidator,
               obscure: true,

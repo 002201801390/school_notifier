@@ -93,8 +93,12 @@ class StudentList extends StatelessWidget {
   }
 
   _buildAddStudent(BuildContext context) {
-    return FloatingActionButton(
-      child: Icon(Icons.add),
+    return FloatingActionButton.extended(
+      label: Text(
+        'Adicionar Aluno',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      icon: Icon(Icons.add),
       onPressed: () =>
           Navigator.pushNamed(context, '/dashboard/student_list/student_add'),
     );
