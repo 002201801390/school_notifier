@@ -36,7 +36,7 @@ public class StudentResource extends DefaultResource<Student> {
 
     @Override
     public boolean deleteImpl(Student student) {
-        return StudentDao.gi().update(student);
+        return StudentDao.gi().delete(student);
     }
 
     @Override

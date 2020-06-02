@@ -16,31 +16,36 @@ class StudentAdd extends StatelessWidget {
       appBar: AppBar(
         title: Text('Adicionar aluno'),
       ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            TextComponents.textField(
-              label: 'Nome',
-              controller: _nameController,
-              validator: _nameValidator,
-            ),
-            TextComponents.textField(
-              label: 'Usuário',
-              controller: _usernameController,
-              validator: _usernameValidator,
-            ),
-            TextComponents.textField(
-              label: 'Senha',
-              controller: _passwordController,
-              validator: _passwordValidator,
-              obscure: true,
-            ),
-            RaisedButton(
-              child: Text('Cadastrar'),
-              onPressed: () => _btnSavePressed(),
-            ),
-          ],
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextComponents.textField(
+                label: 'Nome',
+                controller: _nameController,
+                validator: _nameValidator,
+              ),
+              TextComponents.textField(
+                label: 'Usuário',
+                controller: _usernameController,
+                validator: _usernameValidator,
+              ),
+              TextComponents.textField(
+                label: 'Senha',
+                controller: _passwordController,
+                validator: _passwordValidator,
+                obscure: true,
+              ),
+              Spacer(flex: 1),
+              RaisedButton(
+                child: Text('Cadastrar'),
+                onPressed: () => _btnSavePressed(context),
+              ),
+              Spacer(flex: 10),
+            ],
+          ),
         ),
       ),
     );
@@ -67,12 +72,33 @@ class StudentAdd extends StatelessWidget {
     return null;
   }
 
-  _btnSavePressed() {
+  _btnSavePressed(BuildContext context) async {
     if (!_formKey.currentState.validate()) {
       return;
     }
 
-    StudentDao.save(_studentData());
+    final success = await StudentDao.save(_studentData());
+    if (!success) {
+      showDialog(
+        context: context,
+        builder: (_) => _alertDialog(context, 'Erro ao salvar aluno'),
+      );
+      return;
+    }
+
+    Navigator.pop(context);
+  }
+
+  _alertDialog(BuildContext context, String message) {
+    return AlertDialog(
+      title: Text(message),
+      actions: <Widget>[
+        FlatButton(
+          child: Text('Ok'),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ],
+    );
   }
 
   _studentData() {

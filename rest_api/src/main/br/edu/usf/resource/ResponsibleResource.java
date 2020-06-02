@@ -36,7 +36,7 @@ public class ResponsibleResource extends DefaultResource<Responsible> {
 
     @Override
     public boolean deleteImpl(Responsible responsible) {
-        return ResponsibleDao.gi().update(responsible);
+        return ResponsibleDao.gi().delete(responsible);
     }
 
     @Override

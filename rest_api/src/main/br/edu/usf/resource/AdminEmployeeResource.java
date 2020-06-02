@@ -26,7 +26,7 @@ public class AdminEmployeeResource extends DefaultResource<AdminEmployee> {
 
     @Override
     public boolean deleteImpl(AdminEmployee adminEmployee) {
-        return AdminEmployeeDao.gi().update(adminEmployee);
+        return AdminEmployeeDao.gi().delete(adminEmployee);
     }
 
     @Override

@@ -23,15 +23,31 @@ class StudentDao {
     return null;
   }
 
-  static Future<bool> save(User studentData) async {
-
-    final studentJson = jsonEncode(studentData.toJson());
-    final data = Map();
-    data['data'] = studentJson;
+  static Future<bool> save(User student) async {
+    final studentJson = jsonEncode(student.toJson());
 
     final response =
         await HttpUtils.doPost('/student/insert', studentJson, true);
 
     return response.statusCode == 200;
   }
+
+  static Future<bool> update(User student) async {
+    final studentJson = jsonEncode(student.toJson());
+
+    final response =
+        await HttpUtils.doPost('/student/update', studentJson, true);
+
+    return response.statusCode == 200;
+  }
+
+  static Future<bool> delete(User student) async {
+    final studentJson = jsonEncode(student.toJson());
+
+    final response =
+        await HttpUtils.doPost('/student/delete', studentJson, true);
+
+    return response.statusCode == 200;
+  }
+
 }

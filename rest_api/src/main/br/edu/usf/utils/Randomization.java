@@ -136,7 +136,7 @@ public class Randomization {
         Randomization.flushPerson();
 
         person.setName(Randomization.name());
-        person.setDtBirth(Randomization.dtBirth());
+//        person.setDtBirth(Randomization.dtBirth());
         person.setEmail(Randomization.email());
         person.setPhone(Randomization.phone());
         person.setUsername(Randomization.username());
