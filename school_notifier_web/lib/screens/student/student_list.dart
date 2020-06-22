@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:school_notifier_web/dao/student_dao.dart';
 import 'package:school_notifier_web/models/user.dart';
 
-class StudentList extends StatelessWidget {
+class StudentList extends StatefulWidget {
+  @override
+  _StudentListState createState() => _StudentListState();
+}
+
+class _StudentListState extends State<StudentList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,8 +91,11 @@ class StudentList extends StatelessWidget {
       child: ListTile(
         title: Text(student.name),
         leading: Icon(Icons.person),
-        onTap: () => Navigator.pushNamed(context, '/dashboard/student',
-            arguments: student),
+        onTap: () => Navigator.pushNamed(
+          context,
+          '/dashboard/student',
+          arguments: student,
+        ).then((value) => setState(() => _buildStudentList())),
       ),
     );
   }
@@ -100,7 +108,8 @@ class StudentList extends StatelessWidget {
       ),
       icon: Icon(Icons.add),
       onPressed: () =>
-          Navigator.pushNamed(context, '/dashboard/student_list/student_add'),
+          Navigator.pushNamed(context, '/dashboard/student_list/student_add')
+              .then((value) => setState(() => _buildStudentList())),
     );
   }
 }
