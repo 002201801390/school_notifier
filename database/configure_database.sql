@@ -114,3 +114,10 @@ CREATE TRIGGER validate_responsible_student
     ON responsible_student
     FOR EACH ROW
 EXECUTE PROCEDURE validate_responsible_student();
+
+CREATE TABLE IF NOT EXISTS disciplines
+(
+    id   uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name text not null
+);
+
