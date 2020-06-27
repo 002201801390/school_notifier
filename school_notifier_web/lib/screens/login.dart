@@ -18,14 +18,21 @@ class Login extends StatelessWidget {
   }
 
   _body(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: ListView(
-        children: <Widget>[
-          txtUsername(),
-          txtPassword(),
-          btnLogin(context),
-        ],
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(128.0),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: <Widget>[
+              txtUsername(),
+              txtPassword(),
+              Center(
+                child: btnLogin(context),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

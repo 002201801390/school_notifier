@@ -44,10 +44,10 @@ class SchoolNotifierWeb extends StatelessWidget {
       '/dashboard': (context) => Dashboard(),
       '/dashboard/employee': (context) => Employee(),
       '/dashboard/employee_list': (context) => EmployeeList(),
-      '/dashboard/student_list/employee_add': (context) => ResponsibleAdd(),
+      '/dashboard/employee_list/employee_add': (context) => ResponsibleAdd(),
       '/dashboard/responsible': (context) => Responsible(),
       '/dashboard/responsible_list': (context) => ResponsibleList(),
-      '/dashboard/student_list/responsible_add': (context) => ResponsibleAdd(),
+      '/dashboard/responsible_list/responsible_add': (context) => ResponsibleAdd(),
       '/dashboard/student': (context) => Student(),
       '/dashboard/student_list': (context) => StudentList(),
       '/dashboard/student_list/student_add': (context) => StudentAdd(),
@@ -59,5 +59,5 @@ Future<String> _chooseInitialRoute() async {
   if (await LoginUtils.savedTokenIsValid()) {
     return '/dashboard';
   }
-  return '/';
+  return '/login';
 }
