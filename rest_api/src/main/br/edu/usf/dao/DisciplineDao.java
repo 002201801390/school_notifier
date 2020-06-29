@@ -72,6 +72,25 @@ public class DisciplineDao implements Dao<Discipline> {
         return null;
     }
 
+    public Discipline findById(String disciplineId) {
+        Objects.requireNonNull(disciplineId, "Discipline ID cannot be null!");
+
+        final String sql = "SELECT * FROM disciplines WHERE id = ?";
+
+        try (final PreparedStatement s = DBConnection.gi().connection().prepareStatement(sql)) {
+            s.setObject(1, UUID.fromString(disciplineId));
+
+            final ResultSet resultSet = s.executeQuery();
+            if (resultSet.next()) {
+                return Discipline.fromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            log.error("Error to search discipline by ID", e);
+        }
+
+        return null;
+    }
+
     @Override
     public boolean update(Discipline discipline) {
         Objects.requireNonNull(discipline, "Discipline cannot be null!");

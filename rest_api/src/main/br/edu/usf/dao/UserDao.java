@@ -19,7 +19,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public abstract class UserDao<T extends LoggablePerson> implements Dao<T> {
-    private static final Logger logger = LoggerFactory.getLogger(UserDao.class);
+    private static final Logger log = LoggerFactory.getLogger(UserDao.class);
 
     @Override
     public boolean insert(T person) {
@@ -46,7 +46,7 @@ public abstract class UserDao<T extends LoggablePerson> implements Dao<T> {
             }
 
         } catch (SQLException e) {
-            logger.error("Error to insert person in database", e);
+            log.error("Error to insert person in database", e);
         }
         return null;
     }
@@ -68,7 +68,47 @@ public abstract class UserDao<T extends LoggablePerson> implements Dao<T> {
             return persons;
 
         } catch (SQLException e) {
-            logger.error("Error to search for people in database", e);
+            log.error("Error to search for people in database", e);
+        }
+        return null;
+    }
+
+    public T findById(String userId) {
+        Objects.requireNonNull(userId, "User ID cannot be null!");
+
+        final String sql = UserDaoUtils.selectQuery(role(), userId);
+
+        try (final PreparedStatement s = DBConnection.gi().connection().prepareStatement(sql)) {
+            final ResultSet resultSet = s.executeQuery();
+            if (resultSet.next()) {
+                return resultSetToPerson(resultSet);
+            }
+
+        } catch (SQLException e) {
+            log.error("Error to search user by ID", e);
+        }
+        return null;
+    }
+
+    public Collection<T> findById(Collection<String> userIds) {
+        Objects.requireNonNull(userIds, "User IDs cannot be null!");
+
+        final String sql = UserDaoUtils.selectQuery(role(), userIds);
+
+        try (final PreparedStatement s = DBConnection.gi().connection().prepareStatement(sql)) {
+            final ResultSet resultSet = s.executeQuery();
+
+            final Collection<T> persons = new ArrayList<>();
+
+            while (resultSet.next()) {
+                final T person = resultSetToPerson(resultSet);
+                persons.add(person);
+            }
+
+            return persons;
+
+        } catch (SQLException e) {
+            log.error("Error to search user by ID", e);
         }
         return null;
     }
@@ -88,7 +128,7 @@ public abstract class UserDao<T extends LoggablePerson> implements Dao<T> {
             return true;
 
         } catch (SQLException e) {
-            logger.error("Error to search for person in database", e);
+            log.error("Error to search for person in database", e);
         }
         return false;
     }
@@ -107,7 +147,7 @@ public abstract class UserDao<T extends LoggablePerson> implements Dao<T> {
             return true;
 
         } catch (SQLException e) {
-            logger.error("Error to delete responsible with");
+            log.error("Error to delete responsible with");
         }
 
         return false;

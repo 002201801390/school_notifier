@@ -5,7 +5,9 @@ import br.edu.usf.model.LoggablePerson;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collection;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class UserDaoUtils {
     private UserDaoUtils() {
@@ -17,11 +19,20 @@ public class UserDaoUtils {
     }
 
     public static String selectQuery(String role) {
-        return "SELECT id, cpf, name, username, password, email, dt_birth, phone FROM " + role;
+        return "SELECT id, cpf, name, username, password, email, dt_birth, phone FROM " + role + " ";
+    }
+
+    public static String selectQuery(String role, String userId) {
+        return "SELECT id, cpf, name, username, password, email, dt_birth, phone FROM " + role + " WHERE id = " + userId + " ";
+    }
+
+    public static String selectQuery(String role, Collection<String> userId) {
+        final String ids = userId.stream().map(i -> "'" + i + "'").collect(Collectors.joining(", "));
+        return "SELECT id, cpf, name, username, password, email, dt_birth, phone FROM " + role + " WHERE id IN(" + ids + ") ";
     }
 
     public static String updateQuery() {
-        return "UPDATE users set cpf = ?, name = ?, username = ?, password = ?, email = ?, dt_birth = ?, phone = ? WHERE id = ?";
+        return "UPDATE users set cpf = ?, name = ?, username = ?, password = ?, email = ?, dt_birth = ?, phone = ? WHERE id = ? ";
     }
 
     public static String deleteQuery() {
