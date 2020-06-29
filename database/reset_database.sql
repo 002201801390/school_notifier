@@ -1,4 +1,3 @@
-
 DROP TRIGGER IF EXISTS validate_responsible_student ON responsible_student;
 
 DROP TABLE IF EXISTS responsible_student;
@@ -14,4 +13,9 @@ DROP TABLE IF EXISTS users;
 DROP TYPE IF EXISTS module;
 DROP TYPE IF EXISTS role;
 
-DROP TABLE IF EXISTS disciplines
+DROP TABLE IF EXISTS disciplines;
+
+DROP TABLE IF EXISTS classes_students;
+DROP TABLE IF EXISTS classes;
+
+DROP TABLE IF EXISTS report_cards;
