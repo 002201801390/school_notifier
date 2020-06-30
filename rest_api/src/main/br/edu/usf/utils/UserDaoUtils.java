@@ -23,7 +23,7 @@ public class UserDaoUtils {
     }
 
     public static String selectQuery(String role, String userId) {
-        return "SELECT id, cpf, name, username, password, email, dt_birth, phone FROM " + role + " WHERE id = " + userId + " ";
+        return "SELECT id, cpf, name, username, password, email, dt_birth, phone FROM " + role + " WHERE id = '" + userId + "' ";
     }
 
     public static String selectQuery(String role, Collection<String> userId) {

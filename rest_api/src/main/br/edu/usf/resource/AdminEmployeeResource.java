@@ -30,7 +30,7 @@ public class AdminEmployeeResource extends DefaultResource<AdminEmployee> {
     }
 
     @Override
-    protected AdminEmployee convertInput(String input) {
+    protected AdminEmployee convertInputImpl(String input) {
         return AdminEmployee.fromJson(input);
     }
 }

@@ -29,7 +29,7 @@ public class DisciplineResource extends DefaultResource<Discipline> {
     }
 
     @Override
-    protected Discipline convertInput(String input) {
+    protected Discipline convertInputImpl(String input) {
         return Discipline.fromJson(input);
     }
 }

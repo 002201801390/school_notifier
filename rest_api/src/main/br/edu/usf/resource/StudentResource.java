@@ -40,7 +40,7 @@ public class StudentResource extends DefaultResource<Student> {
     }
 
     @Override
-    protected Student convertInput(String input) {
+    protected Student convertInputImpl(String input) {
         return Student.fromJson(input);
     }
 

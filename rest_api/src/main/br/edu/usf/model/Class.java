@@ -3,7 +3,11 @@ package br.edu.usf.model;
 import br.edu.usf.dao.DisciplineDao;
 import br.edu.usf.dao.EmployeeDao;
 import br.edu.usf.dao.StudentDao;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Class {
+    private static final Logger log = LoggerFactory.getLogger(Class.class);
 
     private String id;
     private Discipline discipline;
@@ -86,6 +91,12 @@ public class Class {
     }
 
     public static Class fromJson(String json) {
-        return new Gson().fromJson(json, Class.class);
+        try {
+            return new ObjectMapper().readValue(json, Class.class);
+
+        } catch (JsonProcessingException e) {
+            log.error("Error to convert JSON to java object");
+        }
+        return null;
     }
 }

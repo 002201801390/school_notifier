@@ -53,5 +53,13 @@ public abstract class DefaultResource<T> {
 
     public abstract boolean deleteImpl(T t);
 
-    protected abstract T convertInput(String input);
+    private T convertInput(String input) {
+        final T convertInput = convertInputImpl(input);
+        if (convertInput != null) {
+            return convertInput;
+        }
+        throw new IllegalArgumentException("Input value cannot be converted");
+    }
+
+    protected abstract T convertInputImpl(String input);
 }

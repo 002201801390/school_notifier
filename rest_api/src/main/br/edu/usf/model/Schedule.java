@@ -1,5 +1,7 @@
 package br.edu.usf.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.sql.Time;
 import java.time.DayOfWeek;
 import java.util.Set;
@@ -14,6 +16,7 @@ public class Schedule {
         return daysOfWeek;
     }
 
+    @JsonIgnore
     public DayOfWeek[] getDaysOfWeekAsArray() {
         return daysOfWeek.toArray(new DayOfWeek[0]);
     }

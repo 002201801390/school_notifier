@@ -29,7 +29,7 @@ public class ClassResource extends DefaultResource<Class> {
     }
 
     @Override
-    protected Class convertInput(String input) {
+    protected Class convertInputImpl(String input) {
         return Class.fromJson(input);
     }
 }

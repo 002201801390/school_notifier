@@ -2,6 +2,9 @@ package br.edu.usf.dao;
 
 import br.edu.usf.database.DBConnection;
 import br.edu.usf.model.Class;
+import br.edu.usf.model.Schedule;
+import br.edu.usf.model.Student;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class ClassDao implements Dao<Class> {
     private static final Logger log = LoggerFactory.getLogger(ClassDao.class);
@@ -43,7 +47,7 @@ public class ClassDao implements Dao<Class> {
                 final String id = generatedKeys.getString("id");
                 aClass.setId(id);
 
-                return true;
+                return relateClassWithStudents(id, aClass.getStudents());
             }
         } catch (SQLException e) {
             log.error("Error to insert Class", e);
@@ -90,10 +94,26 @@ public class ClassDao implements Dao<Class> {
     public boolean update(Class aClass) {
         Objects.requireNonNull(aClass, "Class cannot be null!");
 
-        final String sql = "";
+        final Schedule schedule = aClass.getSchedule();
+
+        final boolean success = relateClassWithStudents(aClass.getId(), aClass.getStudents());
+        if (!success) {
+            return false;
+        }
+
+        final String sql = "UPDATE classes SET discipline_id = ?, teacher_id = ?, days_of_week = ?, time_ini = ?, time_end = ? WHERE id = ?";
 
         try (final PreparedStatement s = DBConnection.gi().connection().prepareStatement(sql)) {
+            s.setObject(1, UUID.fromString(aClass.getDiscipline().getId()));
+            s.setObject(2, UUID.fromString(aClass.getTeacher().getId()));
+            s.setArray(3, DBConnection.gi().connection().createArrayOf("DAYS_OF_WEEK", schedule.getDaysOfWeekAsArray()));
+            s.setTime(4, schedule.getTimeIni());
+            s.setTime(5, schedule.getTimeEnd());
+            s.setObject(6, UUID.fromString(aClass.getId()));
 
+            s.execute();
+
+            return true;
 
         } catch (SQLException e) {
             log.error("Error to update Class", e);
@@ -106,13 +126,75 @@ public class ClassDao implements Dao<Class> {
     public boolean delete(Class aClass) {
         Objects.requireNonNull(aClass, "Class cannot be null!");
 
+        final boolean success = clearClassWithStudents(aClass.getId(), new ArrayList<>());
+        if (!success) {
+            return false;
+        }
+
         final String sql = "DELETE FROM classes_students WHERE class_id = ?";
 
         try (final PreparedStatement s = DBConnection.gi().connection().prepareStatement(sql)) {
+            s.setObject(1, UUID.fromString(aClass.getId()));
 
+            s.execute();
+
+            return true;
 
         } catch (SQLException e) {
             log.error("Error to delete Class", e);
+        }
+
+        return false;
+    }
+
+    private boolean relateClassWithStudents(String classId, Collection<Student> students) {
+
+        boolean successToClean = clearClassWithStudents(classId, students);
+        if (!successToClean) {
+            return false;
+        }
+
+        if (students.isEmpty()) {
+            return true;
+        }
+
+        String sql = "INSERT INTO classes_students (class_id, student_id) VALUES (?, ?)";
+
+        try (PreparedStatement s = DBConnection.gi().connection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            for (Student student : students) {
+                s.setObject(1, UUID.fromString(classId));
+                s.setObject(2, UUID.fromString(student.getId()));
+                s.addBatch();
+            }
+
+            s.execute();
+
+            return true;
+
+        } catch (SQLException e) {
+            log.error("Error to relate class with students in database", e);
+        }
+        return false;
+    }
+
+    private boolean clearClassWithStudents(String classId, @NotNull Collection<Student> students) {
+        final boolean emptyRelation = students.isEmpty();
+
+        String sql = "DELETE FROM classes_students WHERE class_id = ? ";
+        if (!emptyRelation) {
+            final String studentsIds = students.stream().map(student -> "'" + student.getId() + "'").collect(Collectors.joining(", "));
+            sql += "AND student_id NOT IN(" + studentsIds + ")";
+        }
+
+        try (PreparedStatement s = DBConnection.gi().connection().prepareStatement(sql)) {
+            s.setObject(1, UUID.fromString(classId));
+
+            s.execute();
+
+            return true;
+
+        } catch (SQLException e) {
+            log.error("Error to clear old relation with class and students in database", e);
         }
 
         return false;

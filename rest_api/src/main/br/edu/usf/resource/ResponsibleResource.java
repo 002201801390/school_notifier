@@ -40,7 +40,7 @@ public class ResponsibleResource extends DefaultResource<Responsible> {
     }
 
     @Override
-    protected Responsible convertInput(String input) {
+    protected Responsible convertInputImpl(String input) {
         return Responsible.fromJson(input);
     }
 
