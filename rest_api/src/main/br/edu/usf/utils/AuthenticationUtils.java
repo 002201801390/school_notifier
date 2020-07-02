@@ -27,6 +27,10 @@ public class AuthenticationUtils {
         return encryptUserPassword(personId, password);
     }
 
+    public static void main(String[] args) {
+        System.out.println(encryptUserPassword("61143bcd-2e5f-4ea0-8fb0-fa10aaf044c9", "lalalu"));
+    }
+
     public static @NotNull String encryptUserPassword(@NotNull String personId, @NotNull String password) throws RuntimeException {
         try {
             final MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
