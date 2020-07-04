@@ -7,13 +7,19 @@ class Showcase extends StatelessWidget {
       appBar: AppBar(
         title: Text('Showcase'),
       ),
-      body: Row(
-        children: <Widget>[
-          RaisedButton(
-            child: Text('Login'),
-            onPressed: () => Navigator.pushNamed(context, '/login'),
-          ),
-        ],
+      body: Center(
+        child: Column(
+          children: <Widget>[
+            RaisedButton(
+              child: Text('Login'),
+              onPressed: () => Navigator.pushNamed(context, '/login'),
+            ),
+            RaisedButton(
+              child: Text('Settings'),
+              onPressed: () => Navigator.pushNamed(context, '/settings'),
+            ),
+          ],
+        ),
       ),
     );
   }

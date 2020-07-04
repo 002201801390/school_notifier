@@ -6,6 +6,7 @@ import 'package:school_notifier_web/screens/login.dart';
 import 'package:school_notifier_web/screens/responsible/responsible.dart';
 import 'package:school_notifier_web/screens/responsible/responsible_add.dart';
 import 'package:school_notifier_web/screens/responsible/responsible_list.dart';
+import 'package:school_notifier_web/screens/settings.dart';
 import 'package:school_notifier_web/screens/showcase.dart';
 import 'package:school_notifier_web/screens/student/student.dart';
 import 'package:school_notifier_web/screens/student/student_add.dart';
@@ -40,6 +41,7 @@ class SchoolNotifierWeb extends StatelessWidget {
   _routes(BuildContext context) {
     return {
       '/': (context) => Showcase(),
+      '/settings': (context) => Settings(),
       '/login': (context) => Login(),
       '/dashboard': (context) => Dashboard(),
       '/dashboard/employee': (context) => Employee(),
@@ -59,5 +61,5 @@ Future<String> _chooseInitialRoute() async {
   if (await LoginUtils.savedTokenIsValid()) {
     return '/dashboard';
   }
-  return '/login';
+  return '/';
 }

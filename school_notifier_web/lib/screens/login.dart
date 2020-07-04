@@ -81,17 +81,23 @@ class Login extends StatelessWidget {
       return;
     }
 
-    Future<bool> response = LoginUtils.login(username, password);
-    response.then((validToken) async {
-      if (validToken) {
+    Future<int> response = LoginUtils.login(username, password);
+    response.then((statusCode) async {
+      if (statusCode == 200) {
         Navigator.pushNamed(context, '/dashboard');
 
         debugPrint('Login done successfully');
-      } else {
+      } else if (statusCode == 401) {
         debugPrint('Invalid credentials to login');
         showDialog(
           context: context,
           builder: (_) => _alertDialog(context, 'Credênciais inválidas'),
+        );
+      } else {
+        debugPrint('Error to login. Returned status code: $statusCode');
+        showDialog(
+          context: context,
+          builder: (_) => _alertDialog(context, 'Erro ao realizar login. Código $statusCode'),
         );
       }
     });

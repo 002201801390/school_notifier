@@ -1,16 +1,22 @@
+import 'package:school_notifier_web/storage/storage.dart';
+
 class Settings {
   static const String APP_MODULE_NAME = 'web';
 
-  static String serverURL() {
-    return "${protocol()}://${serverAddress()}:${serverPort()}/${restApiPath()}";
+  static Future<String> serverURL() async {
+    var address = await serverAddress();
+    return "${protocol()}://$address:${serverPort()}/${restApiPath()}";
   }
 
   static String protocol() {
     return 'http';
   }
 
-  static String serverAddress() {
-//    return '10.0.2.2';
+  static Future<String> serverAddress() async {
+    var address = await Storage.read('ip');
+    if (address != null && address.isNotEmpty) {
+      return address;
+    }
     return '192.168.0.117';
   }
 
