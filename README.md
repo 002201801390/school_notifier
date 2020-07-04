@@ -92,7 +92,7 @@ $ sudo [vim|nano|gedit|etc...] /var/lib/AccountsService/users/$USER
 Altere a propriedade `XSession=` para `XSession=gnome-xorg` e realize o logout e login novamente
 
 
- * Execute o arquivo `compiled_apps/web/[linux|windows]/school_notifier_web`
+ * Execute o arquivo `compiled_apps/web/school_notifier_web` - *Linux apenas*
  
  ou
  
