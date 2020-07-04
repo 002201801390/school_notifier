@@ -1,6 +1,6 @@
 INSERT INTO users(id, name, role, username, password)
 VALUES ('61143bcd-2e5f-4ea0-8fb0-fa10aaf044c6'::uuid,
-        'ADMIN', 'employee', 'admin',
+        'ADMIN', 'admin', 'admin',
         '5a11f031c0ec66b75db135c29adab3f00f23ee48e33170cdc3e65f1606685005c1f5922666bc6ac850b3f9f67ca72dd8a9ec3a3438f2e218565970ee04e4eb28'),
        ('61143bcd-2e5f-4ea0-8fb0-fa10aaf044c9'::uuid,
         'Laila Lúcia', 'employee', 'lalalu',

@@ -90,7 +90,10 @@ public class AuthenticationEndpoint {
             case "student":
                 return module.equalsIgnoreCase("mobile");
 
-            // TODO: REMOVE
+            case "employee":
+                return module.equalsIgnoreCase("web");
+
+            // TODO: Remove
             case "admin":
                 return true;
         }
