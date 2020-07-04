@@ -67,8 +67,12 @@ Curso: Análise e Desenvolvimento de Sistemas [ADS]
 
 
 #### Iniciando o Aplicativo Mobile:
+ * Instale o arquivo `/compiled_apps/app/app-release.apk` no dispositivo
+ 
+ ou
+ 
  * Certifique-se de possuir um dispositivo android conectado em modo de depuração USB ou um emulador já iniciado
- * Entre na pasta do aplicativo em `/school_notifier_appschool_notifier_app`
+ * Entre na pasta do aplicativo em `/school_notifier_app`
  * Execute o comando `flutter run`
 
 
