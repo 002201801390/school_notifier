@@ -90,6 +90,37 @@ public class ClassDao implements Dao<Class> {
         return null;
     }
 
+
+    public Class findById(String classId) {
+        final String sql = "SELECT " +
+                "c.id            AS class_id, " +
+                "c.discipline_id AS discipline_id, " +
+                "c.teacher_id    AS teacher_id, " +
+                "c.days_of_week  AS days_of_week, " +
+                "c.time_ini      AS time_ini, " +
+                "c.time_end      AS time_end, " +
+                "array_agg(s.id) AS student_ids " +
+                "FROM classes_students cs " +
+                "INNER JOIN classes c on cs.class_id = c.id " +
+                "INNER JOIN student s on cs.student_id = s.id " +
+                "WHERE c.id = ? " +
+                "GROUP BY c.id";
+
+        try (final PreparedStatement s = DBConnection.gi().connection().prepareStatement(sql)) {
+            s.setObject(1, UUID.fromString(classId));
+
+            final ResultSet resultSet = s.executeQuery();
+
+            if (resultSet.next()) {
+                return Class.fromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            log.error("Error to search for all classes", e);
+        }
+
+        return null;
+    }
+
     @Override
     public boolean update(Class aClass) {
         Objects.requireNonNull(aClass, "Class cannot be null!");
