@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # catalina.sh path
-if [ -z "$1" ]; then
+if [[ -z "$1" ]]; then
   echo "'catalina.sh' path is missing"
   exit 1
 fi
 
 # webapps path
-if [ -z "$2" ]; then
+if [[ -z "$2" ]]; then
   echo "'webapps' path is missing"
   exit 1
 fi

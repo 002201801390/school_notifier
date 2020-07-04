@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS classes
     id            uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
     discipline_id uuid not null references disciplines (id),
     teacher_id    uuid not null references users (id),
-    day_of_week   day_of_week[],
+    days_of_week  day_of_week[],
     time_ini      time,
     time_end      time
 );
@@ -118,5 +118,5 @@ CREATE TABLE IF NOT EXISTS report_cards
     student_id      uuid not null references users (id),
     class_id        uuid not null references classes (id),
     score           float,
-    responsible_ack bool not null    default false
+    responsible_ack bool not null    DEFAULT false
 );

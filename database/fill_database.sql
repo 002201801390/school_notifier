@@ -32,7 +32,7 @@ VALUES ('eeeb136c-052c-4830-9201-0d681bf11faa'::uuid, 'Matemática'),
 
 
 INSERT
-INTO classes(id, discipline_id, teacher_id, day_of_week, time_ini, time_end)
+INTO classes(id, discipline_id, teacher_id, days_of_week, time_ini, time_end)
 VALUES ('d43888d8-f5fc-4ce9-a342-b88ff290dfa9'::uuid,
         '73d84bf2-4cc9-45f3-9744-a6ddb54fb6a1'::uuid,
         '61143bcd-2e5f-4ea0-8fb0-fa10aaf044c8'::uuid,
