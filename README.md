@@ -35,10 +35,9 @@ Curso: Análise e Desenvolvimento de Sistemas [ADS]
    e com uma nova base de dados com o nome `school_notifier`, executando `CREATE DATABASE school_notifier`
    * Caso o seu sistema seja Unix, para criar o banco de dados conteinerizado com as especificações citadas,
      execute o script `database/docker_postgres.sh`
- * Para sistemas Unix:
-    * Maven instalado, e configurado para utilizar a JDK 11. A saída para o comando `mvn --version` deve indicar algo como
-      `Java version: 11.X.X`. Caso o maven esteja utilizando uma versão mais antiga da JDK, adicione `JAVA_HOME` indicando
-      o diretório da JDK 11 e `JAVACMD` indicando `$JAVA_HOME/bin/java` como variáveis de ambiente no seu sistema.
+ * Maven instalado, e configurado para utilizar a JDK 11. A saída para o comando `mvn --version` deve indicar algo como
+   `Java version: 11.X.X`. Caso o maven esteja utilizando uma versão mais antiga da JDK, adicione `JAVA_HOME` indicando
+   o diretório da JDK 11 e `JAVACMD` indicando `$JAVA_HOME/bin/java` como variáveis de ambiente no seu sistema.
  * Flutter SDK instalado e configurado - [Link para download](https://flutter.dev/docs/get-started/install)
 
 
@@ -62,35 +61,41 @@ Curso: Análise e Desenvolvimento de Sistemas [ADS]
 
 ##### Windows:
  * Realizar o build do projeto dentro de `/rest_api` como um projeto `maven`
- * Extrair o arquivo `SchoolNotifier-0.0.1-SNAPSHOT.war` dentro de `/rest_api/target` para dentro da pasta `$WEBAPPS_PATH/school_notifier`
+ * Extrair o arquivo `/rest_api/target/SchoolNotifier-0.0.1-SNAPSHOT.war` para dentro da pasta `$WEBAPPS_PATH/school_notifier`
  * Inicie o Tomcat
 
 
 #### Iniciando o Aplicativo Mobile:
  * Instale o arquivo `/compiled_apps/app/app-release.apk` no dispositivo
- 
+
  ou
- 
+
  * Certifique-se de possuir um dispositivo android conectado em modo de depuração USB ou um emulador já iniciado
  * Entre na pasta do aplicativo em `/school_notifier_app`
  * Execute o comando `flutter run`
 
 
 #### Iniciando o Aplicativo Desktop:
- * **ATENÇÃO**: O Flutter para desktop ainda está em fase de desenvolvimento, podendo ocorrer alguns bugs inesperados.
-   A versão desktop foi desenvolvida e testada na distribuição Linux Fedora 31 e 32, com a interface desktop GNOME e com
-   o servidor gráfico Xorg.
-   Para verificar qual servidor gráfico seu sistema está utilizando execute `echo $XDG_SESSION_TYPE` no terminal. 
-   Caso a saída seja `x11` o sistema já está utilizando o Xorg, caso a saída seja `wayland` (que está sendo adotado nas distros linux mais novas).
-   Para mudar o servidor pela insterface do sistema siga [este guia](https://www.maketecheasier.com/switch-xorg-wayland-ubuntu1710/)
-   e para alterar pelo teminal siga as instruções abaixo:
-   
-    * OBS: Realizado na distribuição Linux Fedora 31 e 32
-      ```
-      $ sudo [vim|nano|gedit|etc...] /var/lib/AccountsService/users/$USER
-      ```
-      Altere a propriedade `XSession=` para `XSession=gnome-xorg` e realize o logout e login novamente
+**ATENÇÃO**: O Flutter para desktop ainda está em fase de desenvolvimento, podendo ocorrer alguns bugs inesperados.
+A versão desktop foi desenvolvida e testada na distribuição Linux Fedora 31 e 32, com a interface desktop GNOME e com
+o servidor gráfico Xorg.
+Para verificar qual servidor gráfico seu sistema está utilizando execute `echo $XDG_SESSION_TYPE` no terminal. 
+Caso a saída seja `x11` o sistema já está utilizando o Xorg, caso a saída seja `wayland` (que está sendo adotado nas distros linux mais novas)
+será necessário mudar para o Xorg.
+Para mudar o servidor pela insterface do sistema siga [este guia](https://www.maketecheasier.com/switch-xorg-wayland-ubuntu1710/)
+e para alterar pelo teminal siga as instruções abaixo:
 
+OBS: Realizado na distribuição Linux Fedora 31 e 32
+```
+$ sudo [vim|nano|gedit|etc...] /var/lib/AccountsService/users/$USER
+```
+Altere a propriedade `XSession=` para `XSession=gnome-xorg` e realize o logout e login novamente
+
+
+ * Execute o arquivo `compiled_apps/web/[linux|windows]/school_notifier_web`
+ 
+ ou
+ 
  * Habilite a feature de aplicações desktop executando `flutter config --enable-[linux|macos|windows]-desktop`
  * Entre na pasta do aplicativo em `/school_notifier_web`
  * Execute o comando `flutter run`
