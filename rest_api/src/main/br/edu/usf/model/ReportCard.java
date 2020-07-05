@@ -1,6 +1,7 @@
 package br.edu.usf.model;
 
 import br.edu.usf.dao.ClassDao;
+import br.edu.usf.dao.StudentDao;
 import com.google.gson.Gson;
 
 import java.sql.ResultSet;
@@ -60,6 +61,7 @@ public class ReportCard {
 
         final ReportCard student = new ReportCard();
         student.setId(resultSet.getString("id"));
+        student.setStudent(StudentDao.gi().findById(resultSet.getString("student_id")));
         student.setClazz(ClassDao.gi().findById(resultSet.getString("class_id")));
         student.setScore(resultSet.getFloat("score"));
         student.setResponsibleAck(resultSet.getBoolean("responsible_ack"));
