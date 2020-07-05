@@ -2,6 +2,8 @@ package br.edu.usf.dao;
 
 import br.edu.usf.database.DBConnection;
 import br.edu.usf.model.ReportCard;
+import br.edu.usf.model.Responsible;
+import br.edu.usf.model.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class ReportCardDao implements Dao<ReportCard> {
     private static final Logger log = LoggerFactory.getLogger(ReportCardDao.class);
@@ -109,5 +112,33 @@ public class ReportCardDao implements Dao<ReportCard> {
             log.error("Error to delete Report Card", e);
         }
         return false;
+    }
+
+    public Collection<ReportCard> relatedTo(Responsible responsible) {
+        Objects.requireNonNull(responsible, "Report card cannot be null!");
+
+        final Collection<Student> studentsRelatedWithResponsible = StudentDao.gi().relatedTo(responsible);
+        if (studentsRelatedWithResponsible == null || studentsRelatedWithResponsible.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        final String ids = studentsRelatedWithResponsible.stream().map(s -> "'" + s.getId() + "'").collect(Collectors.joining(", "));
+
+        final String sql = "SELECT * FROM report_cards WHERE student_id IN (" + ids + ") ";
+        try (final PreparedStatement s = DBConnection.gi().connection().prepareStatement(sql)) {
+            final ResultSet resultSet = s.executeQuery();
+
+            final Collection<ReportCard> reportCards = new ArrayList<>();
+
+            while (resultSet.next()) {
+                final ReportCard reportCard = ReportCard.fromResultSetImpl(resultSet);
+                reportCards.add(reportCard);
+            }
+            return reportCards;
+
+        } catch (SQLException e) {
+            log.error("Error to get Report Cards related to responsible", e);
+        }
+        return null;
     }
 }

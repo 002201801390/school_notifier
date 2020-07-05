@@ -51,7 +51,22 @@ public class StudentDao extends UserDao<Student> {
     public Collection<Student> relatedTo(Responsible responsible) {
         Objects.requireNonNull(responsible, "Responsible cannot be null");
 
-        final String sql = "SELECT * FROM student s INNER JOIN responsible_student rs on s.id = rs.student_id AND rs.responsible_id = ?";
+        final String sql = "SELECT " +
+                "s.id            AS id, " +
+                "s.cpf           AS cpf, " +
+                "s.name          AS name, " +
+                "s.username      AS username, " +
+                "s.password      AS password, " +
+                "s.email         AS email, " +
+                "s.dt_birth      AS dt_birth, " +
+                "s.phone         AS phone, " +
+                "array_agg(r.id) AS responsible_ids " +
+                "FROM responsible_student rs " +
+                "INNER JOIN responsible r on rs.responsible_id = r.id " +
+                "INNER JOIN student s on rs.student_id = s.id " +
+                "WHERE r.id = ? " +
+                "GROUP BY s.id, s.cpf, s.name, s.username, s.password, s.email, s.dt_birth, s.phone ";
+
         try (PreparedStatement s = DBConnection.gi().connection().prepareStatement(sql)) {
             s.setObject(1, UUID.fromString(responsible.getId()));
 

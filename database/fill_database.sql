@@ -18,8 +18,8 @@ VALUES ('61143bcd-2e5f-4ea0-8fb0-fa10aaf044c6'::uuid,
         'Brad Gibson', 'responsible', 'bson',
         '85c666c68c517fac3a0c0850cc0ad54fc71f552ada46b52a970501dc4b0f2f46aeef06b4fc02dccc9201583d51f63e58f77375e29ece6b3e56130a3c1d13fb57'),
        ('720a65c9-1d7e-40b1-bbac-5b050c17a238'::uuid,
-        'Clara Kristensen', 'responsible', 'cKrisen',
-        '593efc67b24179d0e58badb619ddfb8253861ac25ba98a8c442d6a6acb247005b2fc2ca0b8bde85156b157443a08b9d41cc690c3d412d914ec69f5973607a115');
+        'Clara Kristensen', 'responsible', 'krisen',
+        'a6ef6eb628f65976fcc1e48095cd553d64fdeac57c7d259380efc4e08df2a10555279150230ee16853971ba9e38fb299e47bc102865ae83f0f077dd332bc9267');
 
 
 INSERT INTO responsible_student(id, student_id, responsible_id)
