@@ -6,16 +6,22 @@ class TextComponents {
     bool obscure,
     TextEditingController controller,
     FormFieldValidator<String> validator,
+    TextInputType keyboardType,
+    InputDecoration decoration,
+    TextAlign textAlign,
   }) {
     return TextFormField(
       obscureText: true == obscure,
       controller: controller,
       validator: validator,
-      keyboardType: TextInputType.text,
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: TextStyle(fontSize: 20.0),
-      ),
+      keyboardType: keyboardType != null ? keyboardType : TextInputType.text,
+      decoration: decoration != null
+          ? decoration
+          : InputDecoration(
+              labelText: label,
+              labelStyle: TextStyle(fontSize: 20.0),
+            ),
+      textAlign: textAlign != null ? textAlign : TextAlign.start,
     );
   }
 

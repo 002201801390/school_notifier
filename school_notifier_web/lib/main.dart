@@ -3,6 +3,9 @@ import 'package:school_notifier_web/screens/dashboard.dart';
 import 'package:school_notifier_web/screens/employee/employee.dart';
 import 'package:school_notifier_web/screens/employee/employee_list.dart';
 import 'package:school_notifier_web/screens/login.dart';
+import 'package:school_notifier_web/screens/report_card/report_card.dart';
+import 'package:school_notifier_web/screens/report_card/report_card_add.dart';
+import 'package:school_notifier_web/screens/report_card/report_card_list.dart';
 import 'package:school_notifier_web/screens/responsible/responsible.dart';
 import 'package:school_notifier_web/screens/responsible/responsible_add.dart';
 import 'package:school_notifier_web/screens/responsible/responsible_list.dart';
@@ -53,6 +56,9 @@ class SchoolNotifierWeb extends StatelessWidget {
       '/dashboard/student': (context) => Student(),
       '/dashboard/student_list': (context) => StudentList(),
       '/dashboard/student_list/student_add': (context) => StudentAdd(),
+      '/dashboard/report_card': (context) => ReportCardView(),
+      '/dashboard/report_card_list': (context) => ReportCardList(),
+      '/dashboard/report_card_list/report_card_add': (context) => ReportCardAdd(),
     };
   }
 }

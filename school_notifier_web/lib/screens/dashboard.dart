@@ -24,6 +24,7 @@ class Dashboard extends StatelessWidget {
             _cardEmployee(context),
             _cardResponsible(context),
             _cardStudent(context),
+            _cardReport(context),
           ],
         ),
       ],
@@ -58,6 +59,17 @@ class Dashboard extends StatelessWidget {
         child: ListTile(
           title: Text('Alunos'),
           onTap: () => Navigator.pushNamed(context, '/dashboard/student_list'),
+        ),
+      ),
+    );
+  }
+
+  _cardReport(BuildContext context) {
+    return Expanded(
+      child: Card(
+        child: ListTile(
+          title: Text('Boletins'),
+          onTap: () => Navigator.pushNamed(context, '/dashboard/report_card_list'),
         ),
       ),
     );
