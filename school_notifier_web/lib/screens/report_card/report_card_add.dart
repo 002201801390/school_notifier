@@ -1,75 +1,193 @@
 import 'package:flutter/material.dart';
 import 'package:school_notifier_web/components/text_field.dart';
+import 'package:school_notifier_web/dao/class_dao.dart';
+import 'package:school_notifier_web/dao/report_card_dao.dart';
 import 'package:school_notifier_web/dao/student_dao.dart';
+import 'package:school_notifier_web/models/class.dart';
+import 'package:school_notifier_web/models/report_card.dart';
 import 'package:school_notifier_web/models/user.dart';
 
-class ReportCardAdd extends StatelessWidget {
-  final _nameController = TextEditingController();
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
+class ReportCardAdd extends StatefulWidget {
+  @override
+  _ReportCardAddState createState() => _ReportCardAddState();
+}
+
+class _ReportCardAddState extends State<ReportCardAdd> {
+  final _scoreController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey();
+
+  List<DropdownMenuItem<User>> _studentItems = List();
+
+  User _selectedStudent;
+
+  List<DropdownMenuItem<Class>> _classItems = List();
+
+  Class _selectedClass;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Adicionar aluno'),
+        title: Text('Adicionar boletim'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              TextComponents.textField(
-                label: 'Nome',
-                controller: _nameController,
-                validator: _nameValidator,
-              ),
-              TextComponents.textField(
-                label: 'Usuário',
-                controller: _usernameController,
-                validator: _usernameValidator,
-              ),
-              TextComponents.textField(
-                label: 'Senha',
-                controller: _passwordController,
-                validator: _passwordValidator,
-                obscure: true,
-              ),
-              Spacer(flex: 1),
-              RaisedButton(
-                child: Text('Cadastrar'),
-                onPressed: () => _btnSavePressed(context),
-              ),
-              Spacer(flex: 10),
-            ],
-          ),
-        ),
+        child: _body(context),
       ),
     );
   }
 
-  String _nameValidator(String name) {
-    if (name == null || name.isEmpty) {
-      return "Nome vazio";
-    }
-    return null;
+  _body(BuildContext context) {
+    return Column(
+      children: [
+        _reportCardPic(),
+        Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              Container(padding: EdgeInsets.all(16)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _studentComp(),
+                  Container(padding: EdgeInsets.all(8)),
+                  _classComp(),
+                  Container(padding: EdgeInsets.all(8)),
+                  _scoreComp(),
+                  RaisedButton(
+                    child: Text('Cadastrar'),
+                    onPressed: () => _btnSavePressed(context),
+                  ),
+                ],
+              ),
+              Container(padding: EdgeInsets.all(16)),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
-  String _usernameValidator(String username) {
-    if (username == null || username.isEmpty) {
-      return "Usuario vazio";
-    }
-    return null;
+  _reportCardPic() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Center(
+          child: Icon(
+            Icons.assignment,
+            size: 256,
+          ),
+        ),
+      ],
+    );
   }
 
-  String _passwordValidator(String name) {
-    if (name == null || name.isEmpty) {
-      return "Senha vazia";
-    }
-    return null;
+  _scoreComp() {
+    return Row(
+      children: [
+        Text("Nota: "),
+        Container(
+          width: 110,
+          height: 50,
+          child: TextComponents.textField(
+            validator: _scoreValidator,
+            controller: _scoreController,
+            keyboardType: TextInputType.numberWithOptions(decimal: true),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ],
+    );
+  }
+
+  _classComp() {
+    return Row(children: [
+      Text("Classe: "),
+      FutureBuilder<List<Class>>(
+        future: ClassDao.find(),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.none:
+            case ConnectionState.active:
+            case ConnectionState.waiting:
+              break;
+
+            case ConnectionState.done:
+              if (snapshot.data != null) {
+                _classItems = snapshot.data
+                    .map((e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(e.discipline.name),
+                        ))
+                    .toList();
+
+                if (_selectedClass != null) {
+                  for (var item in snapshot.data) {
+                    if (item.id == _selectedClass.id) {
+                      _selectedClass = item;
+                      break;
+                    }
+                  }
+                }
+
+                return DropdownButton(
+                  value: _selectedClass,
+                  items: _classItems,
+                  onChanged: changedDropdownClass,
+                );
+              }
+              break;
+          }
+          return Text('Something went wrong while loading list...');
+        },
+      )
+    ]);
+  }
+
+  _studentComp() {
+    return Row(
+      children: [
+        Text("Aluno: "),
+        FutureBuilder<List<User>>(
+          future: StudentDao.find(),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+              case ConnectionState.active:
+              case ConnectionState.waiting:
+                break;
+
+              case ConnectionState.done:
+                if (snapshot.data != null) {
+                  _studentItems = snapshot.data
+                      .map((e) => DropdownMenuItem(
+                            value: e,
+                            child: Text(e.name),
+                          ))
+                      .toList();
+
+                  if (_selectedStudent != null) {
+                    for (var item in snapshot.data) {
+                      if (item.id == _selectedStudent.id) {
+                        _selectedStudent = item;
+                        break;
+                      }
+                    }
+                  }
+                  return DropdownButton(
+                    value: _selectedStudent,
+                    items: _studentItems,
+                    onChanged: changedDropdownStudent,
+                  );
+                }
+                break;
+            }
+            return Text('Something went wrong while loading list...');
+          },
+        ),
+      ],
+    );
   }
 
   _btnSavePressed(BuildContext context) async {
@@ -77,11 +195,11 @@ class ReportCardAdd extends StatelessWidget {
       return;
     }
 
-    final success = await StudentDao.save(_studentData());
+    final success = await ReportCardDao.save(_reportCardData());
     if (!success) {
       showDialog(
         context: context,
-        builder: (_) => _alertDialog(context, 'Erro ao salvar aluno'),
+        builder: (_) => _alertDialog(context, 'Erro ao salvar boletim'),
       );
       return;
     }
@@ -101,11 +219,43 @@ class ReportCardAdd extends StatelessWidget {
     );
   }
 
-  _studentData() {
-    return User(
-      name: _nameController.text,
-      username: _usernameController.text,
-      password: _passwordController.text,
+  _reportCardData() {
+    return ReportCard(
+      clazz: _selectedClass,
+      student: _selectedStudent,
+      score: double.tryParse(_scoreController.text),
+      responsibleAck: false,
     );
+  }
+
+  void changedDropdownStudent(User student) {
+    setState(() {
+      _selectedStudent = student;
+    });
+  }
+
+  void changedDropdownClass(Class clazz) {
+    setState(() {
+      _selectedClass = clazz;
+    });
+  }
+
+  String _scoreValidator(String scoreText) {
+    if (scoreText == null || scoreText.isEmpty) {
+      return "Nota vazia";
+    }
+    double score = double.tryParse(scoreText);
+    if (score == null) {
+      return "Nota vazia";
+    }
+
+    if (score > 10) {
+      return "Nota maior que 10";
+    }
+
+    if (score < 0) {
+      return "Nota menor que 0";
+    }
+    return null;
   }
 }

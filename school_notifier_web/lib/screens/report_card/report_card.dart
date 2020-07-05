@@ -33,7 +33,7 @@ class _ReportCardViewState extends State<ReportCardView> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Boletin'),
+        title: Text('Boletim'),
         centerTitle: true,
       ),
       body: _body(context, _reportCard),
@@ -43,6 +43,7 @@ class _ReportCardViewState extends State<ReportCardView> {
   _body(BuildContext context, ReportCard reportCard) {
     return Column(
       children: [
+        _reportCardPic(),
         Form(
           key: _formKey,
           child: Padding(
@@ -88,6 +89,20 @@ class _ReportCardViewState extends State<ReportCardView> {
               ),
               Spacer(flex: 10),
             ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  _reportCardPic() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Center(
+          child: Icon(
+            Icons.assignment,
+            size: 256,
           ),
         ),
       ],
@@ -216,7 +231,7 @@ class _ReportCardViewState extends State<ReportCardView> {
     if (!success) {
       showDialog(
         context: context,
-        builder: (_) => _alertDialog(context, 'Erro ao atualizar boletin'),
+        builder: (_) => _alertDialog(context, 'Erro ao atualizar boletim'),
       );
       return;
     }

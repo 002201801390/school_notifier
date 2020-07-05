@@ -5,6 +5,15 @@ import 'package:school_notifier_web/models/report_card.dart';
 import 'package:school_notifier_web/utils/http/http_utils.dart';
 
 class ReportCardDao {
+  static Future<bool> save(ReportCard reportCard) async {
+    final reportCardJson = jsonEncode(reportCard.toJson());
+
+    var response =
+        await HttpUtils.doPost('/report_card/insert', reportCardJson, true);
+
+    return response.statusCode == 200;
+  }
+
   static Future<List<ReportCard>> find() async {
     final http.Response response =
         await HttpUtils.doGet('/report_card/all', true);
