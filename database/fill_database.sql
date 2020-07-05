@@ -23,9 +23,12 @@ VALUES ('61143bcd-2e5f-4ea0-8fb0-fa10aaf044c6'::uuid,
 
 
 INSERT INTO responsible_student(id, student_id, responsible_id)
-VALUES ('b7b20b4d-4eaf-4b97-8178-fd9cbc07d8b3'::uuid, '61143bcd-2e5f-4ea0-8fb0-fa10aaf044c7'::uuid, '720a65c9-1d7e-40b1-bbac-5b050c17a238'::uuid),
-       ('2601ccea-f934-4a41-985c-37b461395b3f'::uuid, '61143bcd-2e5f-4ea0-8fb0-fa10aaf044c7'::uuid, '82b75ec8-1e28-4ff3-9f6a-283069471a97'::uuid),
-       ('f86e4276-7670-421b-b6eb-e55a8aa2b684'::uuid, '602fe963-21b1-4846-9807-1de566371316'::uuid, '82b75ec8-1e28-4ff3-9f6a-283069471a97'::uuid);
+VALUES ('b7b20b4d-4eaf-4b97-8178-fd9cbc07d8b3'::uuid, '61143bcd-2e5f-4ea0-8fb0-fa10aaf044c7'::uuid,
+        '720a65c9-1d7e-40b1-bbac-5b050c17a238'::uuid),
+       ('2601ccea-f934-4a41-985c-37b461395b3f'::uuid, '61143bcd-2e5f-4ea0-8fb0-fa10aaf044c7'::uuid,
+        '82b75ec8-1e28-4ff3-9f6a-283069471a97'::uuid),
+       ('f86e4276-7670-421b-b6eb-e55a8aa2b684'::uuid, '602fe963-21b1-4846-9807-1de566371316'::uuid,
+        '82b75ec8-1e28-4ff3-9f6a-283069471a97'::uuid);
 
 
 INSERT
@@ -66,7 +69,7 @@ VALUES ('d43888d8-f5fc-4ce9-a342-b88ff290dfa9'::uuid,
 
 
 INSERT INTO classes_students(id, class_id, student_id)
-values ('42676180-e32e-4244-a0ee-cd5df91ba742'::uuid,
+VALUES ('42676180-e32e-4244-a0ee-cd5df91ba742'::uuid,
         'd43888d8-f5fc-4ce9-a342-b88ff290dfa9'::uuid,
         '61143bcd-2e5f-4ea0-8fb0-fa10aaf044c7'::uuid),
        ('9e5997fa-4408-40f6-9d28-fbde68333daf'::uuid,
@@ -75,3 +78,26 @@ values ('42676180-e32e-4244-a0ee-cd5df91ba742'::uuid,
        ('6e3bc96d-e432-4fd3-bb8a-ce6f58c00ac1'::uuid,
         'a8630eb6-7c8d-4d2b-ace7-c761af89378a'::uuid,
         '61143bcd-2e5f-4ea0-8fb0-fa10aaf044c7'::uuid);
+
+
+INSERT INTO report_cards(id, student_id, class_id, score, responsible_ack)
+VALUES ('f1fd4be9-ac17-4169-a933-b24d03fe2ce3'::uuid,
+        '61143bcd-2e5f-4ea0-8fb0-fa10aaf044c7'::uuid,
+        'd43888d8-f5fc-4ce9-a342-b88ff290dfa9'::uuid,
+        8.5, false),
+       ('803aaf6e-6527-4c54-a091-91b8006ffbc4'::uuid,
+        '61143bcd-2e5f-4ea0-8fb0-fa10aaf044c7'::uuid,
+        'd43888d8-f5fc-4ce9-a342-b88ff290dfa9'::uuid,
+        9.3, false),
+       ('7994ee07-084c-44a3-99fe-75de96a33d6d'::uuid,
+        '61143bcd-2e5f-4ea0-8fb0-fa10aaf044c7'::uuid,
+        'a8630eb6-7c8d-4d2b-ace7-c761af89378a'::uuid,
+        10.0, false),
+       ('ccc5d4ee-e8e0-4331-8b83-c88e6888485a'::uuid,
+        '602fe963-21b1-4846-9807-1de566371316'::uuid,
+        'd43888d8-f5fc-4ce9-a342-b88ff290dfa9'::uuid,
+        7.0, false),
+       ('bcf00e07-50a9-4659-94ce-af5ade990163'::uuid,
+        '602fe963-21b1-4846-9807-1de566371316'::uuid,
+        'a8630eb6-7c8d-4d2b-ace7-c761af89378a'::uuid,
+        9.0, false);
