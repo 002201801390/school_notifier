@@ -8,7 +8,7 @@ import 'package:school_notifier_app/storage/storage.dart';
 import 'package:school_notifier_app/utils/http/http_utils.dart';
 
 class LoginUtils {
-  static Future<bool> login(String username, String password) async {
+  static Future<int> login(String username, String password) async {
     final Map credentials = Map();
     credentials['module'] = Settings.APP_MODULE_NAME;
     credentials['username'] = username;
@@ -24,14 +24,14 @@ class LoginUtils {
         saveToken(token);
 
         _updateUserCredentials();
-
-        return true;
       }
+      return response.statusCode;
+
     } on Exception catch (e) {
       debugPrint('Error to make login: $e');
     }
 
-    return false;
+    return 404;
   }
 
   static void saveToken(String token) async {

@@ -6,9 +6,9 @@ import 'package:school_notifier_app/storage/storage.dart';
 
 class HttpUtils {
   static Future<http.Response> doPost(
-      String path, Map body, bool useToken) async {
+      String path, body, bool useToken) async {
     return http.post(
-      '${Settings.serverURL()}$path',
+      '${await Settings.serverURL()}$path',
       headers: await _headers(useToken),
       body: body,
       encoding: Encoding.getByName('UTF-8'),
@@ -17,7 +17,7 @@ class HttpUtils {
 
   static Future<http.Response> doGet(String path, bool useToken) async {
     return http.get(
-      '${Settings.serverURL()}$path',
+      '${await Settings.serverURL()}$path',
       headers: await _headers(useToken),
     );
   }

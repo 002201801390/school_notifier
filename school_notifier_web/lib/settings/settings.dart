@@ -17,7 +17,7 @@ class Settings {
     if (address != null && address.isNotEmpty) {
       return address;
     }
-    return '192.168.0.117';
+    return '127.0.0.1';
   }
 
   static String serverPort() {

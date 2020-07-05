@@ -1,17 +1,23 @@
-class Settings {
-  static const String APP_MODULE_NAME = 'mobile';
+import 'package:school_notifier_app/storage/storage.dart';
 
-  static String serverURL() {
-    return "${protocol()}://${serverAddress()}:${serverPort()}/${restApiPath()}";
+class Settings {
+  static const String APP_MODULE_NAME = 'web';
+
+  static Future<String> serverURL() async {
+    var address = await serverAddress();
+    return "${protocol()}://$address:${serverPort()}/${restApiPath()}";
   }
 
   static String protocol() {
     return 'http';
   }
 
-  static String serverAddress() {
-//    return '10.0.2.2';
-    return '192.168.0.117';
+  static Future<String> serverAddress() async {
+    var address = await Storage.read('ip');
+    if (address != null && address.isNotEmpty) {
+      return address;
+    }
+    return '10.0.2.2';
   }
 
   static String serverPort() {
