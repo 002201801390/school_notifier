@@ -6,16 +6,23 @@ class Showcase extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Showcase'),
+        centerTitle: true,
       ),
       body: Center(
         child: Column(
           children: <Widget>[
             RaisedButton(
-              child: Text('Login'),
+              child: Text(
+                'Login',
+                style: TextStyle(fontSize: 20),
+              ),
               onPressed: () => Navigator.pushNamed(context, '/login'),
             ),
             RaisedButton(
-              child: Text('Settings'),
+              child: Text(
+                'Settings',
+                style: TextStyle(fontSize: 20),
+              ),
               onPressed: () => Navigator.pushNamed(context, '/settings'),
             ),
           ],
