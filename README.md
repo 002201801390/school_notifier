@@ -28,6 +28,9 @@ Curso: Análise e Desenvolvimento de Sistemas [ADS]
 ```
 
 ### Instalação
+Observação: No decorrer deste arquivo utilizarei termos como `$PROJECT_DIRECTORY`, `$CATALINA_PATH` e `$WEBAPPS_PATH` para descrever a localização
+dos arquivos deste projeto, do arquivo `catalina.[sh|bat]` e a pasta de aplicações web do tomcat respectivamente.
+
 #### Pré-requisitos:
  * JDK 11 instalado
  * Servidor de aplicação `Tomcat 9` - [Link para download](https://tomcat.apache.org/download-90.cgi)
@@ -41,9 +44,9 @@ Curso: Análise e Desenvolvimento de Sistemas [ADS]
  * Flutter SDK instalado e configurado - [Link para download](https://flutter.dev/docs/get-started/install)
 
 
-#### Configuração inicial:
+#### Configuração inicial do banco de dados:
 ##### Unix:
- * Dentro do diretório do projeto, rode o arquivo `setup.sh` e seja feliz ;)
+ * Dentro do diretório do projeto, rode o arquivo `setup.sh`
  ```
  $ ./setup.sh
  ```
@@ -53,14 +56,14 @@ Curso: Análise e Desenvolvimento de Sistemas [ADS]
 
 
 #### Deploy da API Rest:
-##### Unix:
+##### Unix - Automatizado:
  * Dentro do diretório do projeto, rode o arquivo `deploy.sh` passando o caminho do arquivo `catalina.sh` e da pasta `webapps` nessa sequência
  ```
  $ ./deploy.sh $CATALINA_PATH $WEBAPPS_PATH
  ```
 
-##### Windows:
- * Realizar o build do projeto dentro de `/rest_api` como um projeto `maven`
+##### Unix/Windows - Manual:
+ * Realizar o build do projeto dentro de `/rest_api` com os comandos `mvn install -DskipTests=true` para baixar as dependencias e `mvn package -DskipTests=true` para compilar o projeto
  * Extrair o arquivo `/rest_api/target/SchoolNotifier-0.0.1-SNAPSHOT.war` para dentro da pasta `$WEBAPPS_PATH/school_notifier`
  * Inicie o Tomcat
 
