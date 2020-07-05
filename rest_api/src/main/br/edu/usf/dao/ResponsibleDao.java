@@ -12,10 +12,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ResponsibleDao extends UserDao<Responsible> {
     private static final Logger logger = LoggerFactory.getLogger(ResponsibleDao.class);
@@ -51,23 +49,23 @@ public class ResponsibleDao extends UserDao<Responsible> {
         return update;
     }
 
-    private void relateResponsibleWithStudents(String responsibleId, Collection<Student> students) {
+    private void relateResponsibleWithStudents(String responsibleId, Collection<String> studentsIds) {
 
-        boolean successToClean = clearResponsibleWithStudents(responsibleId, students);
+        boolean successToClean = clearResponsibleWithStudents(responsibleId, studentsIds);
         if (!successToClean) {
             return;
         }
 
-        if (students.isEmpty()) {
+        if (studentsIds.isEmpty()) {
             return;
         }
 
         String sql = "INSERT INTO responsible_student (responsible_id, student_id) VALUES (?, ?)";
 
         try (PreparedStatement s = DBConnection.gi().connection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            for (Student student : students) {
+            for (String studentId : studentsIds) {
                 s.setString(1, responsibleId);
-                s.setString(2, student.getId());
+                s.setString(2, studentId);
                 s.addBatch();
             }
 
@@ -78,8 +76,8 @@ public class ResponsibleDao extends UserDao<Responsible> {
         }
     }
 
-    private boolean clearResponsibleWithStudents(String responsibleId, @NotNull Collection<Student> students) {
-        final boolean emptyRelation = students.isEmpty();
+    private boolean clearResponsibleWithStudents(String responsibleId, @NotNull Collection<String> studentsIds) {
+        final boolean emptyRelation = studentsIds.isEmpty();
 
         String sql = "DELETE FROM responsible_student WHERE responsible_id = ? ";
         if (!emptyRelation) {
@@ -91,8 +89,8 @@ public class ResponsibleDao extends UserDao<Responsible> {
 
             if (!emptyRelation) {
                 StringBuilder builder = new StringBuilder();
-                for (Student student : students) {
-                    builder.append(student.getId());
+                for (String studentId : studentsIds) {
+                    builder.append(studentId);
                 }
 
                 s.setString(2, builder.toString());
@@ -114,6 +112,10 @@ public class ResponsibleDao extends UserDao<Responsible> {
         final Responsible responsible = new Responsible();
 
         UserDaoUtils.resultSetToPerson(resultSet, responsible);
+        final UUID[] studentIdsArray = (UUID[]) resultSet.getArray("student_ids").getArray();
+        final List<String> studentIds = Arrays.stream(studentIdsArray).map(UUID::toString).collect(Collectors.toList());
+
+        responsible.addStudents(studentIds);
 
         return responsible;
     }

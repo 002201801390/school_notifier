@@ -10,7 +10,7 @@ import java.util.Objects;
 
 public class Student extends LoggablePerson {
 
-    protected final Collection<Responsible> responsible = new ArrayList<>();
+    protected final Collection<String> responsibleIds = new ArrayList<>();
 
     public static Student fromResultSetImpl(ResultSet resultSet) throws SQLException {
         Objects.requireNonNull(resultSet, "ResultSet cannot be null");
@@ -24,16 +24,20 @@ public class Student extends LoggablePerson {
         return new Gson().fromJson(json, Student.class);
     }
 
-    public Collection<Responsible> getResponsible() {
-        return new ArrayList<>(responsible);
+    public Collection<String> getResponsibleIds() {
+        return new ArrayList<>(responsibleIds);
     }
 
-    public void addResponsible(Responsible r) {
-        responsible.add(r);
+    public void addResponsible(String r) {
+        responsibleIds.add(r);
     }
 
-    public void removeResponsible(Responsible r) {
-        responsible.remove(r);
+    public void addResponsibles(Collection<String> r) {
+        responsibleIds.addAll(r);
+    }
+
+    public void removeResponsible(String r) {
+        responsibleIds.remove(r);
     }
 
     @Override

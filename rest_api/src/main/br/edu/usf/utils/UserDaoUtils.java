@@ -1,6 +1,7 @@
 package br.edu.usf.utils;
 
 import br.edu.usf.model.LoggablePerson;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -19,16 +20,36 @@ public class UserDaoUtils {
     }
 
     public static String selectQuery(String role) {
-        return "SELECT id, cpf, name, username, password, email, dt_birth, phone FROM " + role + " ";
+        switch (role) {
+            case "student":
+                return selectQueryStudent();
+            case "responsible":
+                return selectQueryResponsible();
+            default:
+                return defaultSelectQuery(role);
+        }
     }
 
     public static String selectQuery(String role, String userId) {
-        return "SELECT id, cpf, name, username, password, email, dt_birth, phone FROM " + role + " WHERE id = '" + userId + "' ";
+        switch (role) {
+            case "student":
+                return selectQueryStudent(userId);
+            case "responsible":
+                return selectQueryResponsible(userId);
+            default:
+                return defaultSelectQuery(role, userId);
+        }
     }
 
     public static String selectQuery(String role, Collection<String> userId) {
-        final String ids = userId.stream().map(i -> "'" + i + "'").collect(Collectors.joining(", "));
-        return "SELECT id, cpf, name, username, password, email, dt_birth, phone FROM " + role + " WHERE id IN(" + ids + ") ";
+        switch (role) {
+            case "student":
+                return selectQueryStudent(userId);
+            case "responsible":
+                return selectQueryResponsible(userId);
+            default:
+                return defaultSelectQuery(role, userId);
+        }
     }
 
     public static String updateQuery() {
@@ -55,5 +76,131 @@ public class UserDaoUtils {
         if (dtBirth != null) {
             person.setDtBirth(dtBirth.toLocalDate());
         }
+    }
+
+    private static String defaultSelectQuery(String role) {
+        return "SELECT id, cpf, name, username, password, email, dt_birth, phone FROM " + role + " ";
+    }
+
+    private static String defaultSelectQuery(String role, String userId) {
+        return "SELECT id, cpf, name, username, password, email, dt_birth, phone FROM " + role + " WHERE id = '" + userId + "' ";
+    }
+
+    private static String defaultSelectQuery(String role, Collection<String> userId) {
+        final String ids = formatIDsToQuery(userId);
+        return "SELECT id, cpf, name, username, password, email, dt_birth, phone FROM " + role + " WHERE id IN(" + ids + ") ";
+    }
+
+    private static String selectQueryStudent() {
+        return "SELECT " +
+                "s.id            AS id, " +
+                "s.cpf           AS cpf, " +
+                "s.name          AS name, " +
+                "s.username      AS username, " +
+                "s.password      AS password, " +
+                "s.email         AS email, " +
+                "s.dt_birth      AS dt_birth, " +
+                "s.phone         AS phone, " +
+                "array_agg(r.id) AS responsible_ids " +
+                "FROM responsible_student rs " +
+                "INNER JOIN responsible r on rs.responsible_id = r.id " +
+                "INNER JOIN student s on rs.student_id = s.id " +
+                "GROUP BY s.id, s.cpf, s.name, s.username, s.password, s.email, s.dt_birth, s.phone ";
+    }
+
+    private static String selectQueryStudent(String userId) {
+        return "SELECT " +
+                "s.id            AS id, " +
+                "s.cpf           AS cpf, " +
+                "s.name          AS name, " +
+                "s.username      AS username, " +
+                "s.password      AS password, " +
+                "s.email         AS email, " +
+                "s.dt_birth      AS dt_birth, " +
+                "s.phone         AS phone, " +
+                "array_agg(r.id) AS responsible_ids " +
+                "FROM responsible_student rs " +
+                "INNER JOIN responsible r on rs.responsible_id = r.id " +
+                "INNER JOIN student s on rs.student_id = s.id " +
+                "WHERE s.id = '" + userId + "' " +
+                "GROUP BY s.id, s.cpf, s.name, s.username, s.password, s.email, s.dt_birth, s.phone ";
+    }
+
+    private static String selectQueryStudent(Collection<String> userId) {
+        final String ids = formatIDsToQuery(userId);
+        return "SELECT " +
+                "s.id            AS id, " +
+                "s.cpf           AS cpf, " +
+                "s.name          AS name, " +
+                "s.username      AS username, " +
+                "s.password      AS password, " +
+                "s.email         AS email, " +
+                "s.dt_birth      AS dt_birth, " +
+                "s.phone         AS phone, " +
+                "array_agg(r.id) AS responsible_ids " +
+                "FROM responsible_student rs " +
+                "INNER JOIN responsible r on rs.responsible_id = r.id " +
+                "INNER JOIN student s on rs.student_id = s.id " +
+                "WHERE s.id IN (" + ids + ") " +
+                "GROUP BY s.id, s.cpf, s.name, s.username, s.password, s.email, s.dt_birth, s.phone ";
+    }
+
+    private static String selectQueryResponsible() {
+        return "SELECT " +
+                "r.id            AS id, " +
+                "r.cpf           AS cpf, " +
+                "r.name          AS name, " +
+                "r.username      AS username, " +
+                "r.password      AS password, " +
+                "r.email         AS email, " +
+                "r.dt_birth      AS dt_birth, " +
+                "r.phone         AS phone, " +
+                "array_agg(s.id) AS student_ids " +
+                "FROM responsible_student rs " +
+                "INNER JOIN responsible r on rs.responsible_id = r.id " +
+                "INNER JOIN student s on rs.student_id = s.id " +
+                "GROUP BY r.id, r.cpf, r.name, r.username, r.password, r.email, r.dt_birth, r.phone ";
+    }
+
+    private static String selectQueryResponsible(String userId) {
+        return "SELECT " +
+                "r.id            AS id, " +
+                "r.cpf           AS cpf, " +
+                "r.name          AS name, " +
+                "r.username      AS username, " +
+                "r.password      AS password, " +
+                "r.email         AS email, " +
+                "r.dt_birth      AS dt_birth, " +
+                "r.phone         AS phone, " +
+                "array_agg(s.id) AS student_ids " +
+                "FROM responsible_student rs " +
+                "INNER JOIN responsible r on rs.responsible_id = r.id " +
+                "INNER JOIN student s on rs.student_id = s.id " +
+                "WHERE id = '" + userId + "' " +
+                "GROUP BY r.id, r.cpf, r.name, r.username, r.password, r.email, r.dt_birth, r.phone ";
+    }
+
+    private static String selectQueryResponsible(Collection<String> userId) {
+        final String ids = formatIDsToQuery(userId);
+        return "SELECT " +
+                "r.id            AS id, " +
+                "r.cpf           AS cpf, " +
+                "r.name          AS name, " +
+                "r.username      AS username, " +
+                "r.password      AS password, " +
+                "r.email         AS email, " +
+                "r.dt_birth      AS dt_birth, " +
+                "r.phone         AS phone, " +
+                "array_agg(s.id) AS student_ids " +
+                "FROM responsible_student rs " +
+                "INNER JOIN responsible r on rs.responsible_id = r.id " +
+                "INNER JOIN student s on rs.student_id = s.id " +
+                "WHERE id IN(" + ids + ") " +
+                "GROUP BY r.id, r.cpf, r.name, r.username, r.password, r.email, r.dt_birth, r.phone ";
+    }
+
+    @NotNull
+    private static String formatIDsToQuery(Collection<String> userId) {
+        return userId.stream().map(i -> "'" + i + "'").collect(Collectors.joining(", "));
     }
 }
