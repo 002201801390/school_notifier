@@ -2,13 +2,17 @@ package br.edu.usf.model;
 
 import br.edu.usf.dao.ClassDao;
 import br.edu.usf.dao.StudentDao;
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
 
 public class ReportCard {
+    private static final Logger log = LoggerFactory.getLogger(ReportCard.class);
 
     private String id;
     private Student student;
@@ -69,6 +73,12 @@ public class ReportCard {
     }
 
     public static ReportCard fromJson(String json) {
-        return new Gson().fromJson(json, ReportCard.class);
+        try {
+            return new ObjectMapper().readValue(json, ReportCard.class);
+
+        } catch (JsonProcessingException e) {
+            log.error("Error to read value from JSON");
+        }
+        return null;
     }
 }
