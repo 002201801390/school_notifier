@@ -16,7 +16,7 @@ class ReportCardDao {
 
   static Future<List<ReportCard>> find() async {
     final http.Response response =
-        await HttpUtils.doGet('/report_card/all', true);
+        await HttpUtils.doGet('/report_card/my', true);
 
     if (response.statusCode == 200) {
       final List<ReportCard> reportCards = List();

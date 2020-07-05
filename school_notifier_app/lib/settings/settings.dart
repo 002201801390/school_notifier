@@ -1,7 +1,7 @@
 import 'package:school_notifier_app/storage/storage.dart';
 
 class Settings {
-  static const String APP_MODULE_NAME = 'web';
+  static const String APP_MODULE_NAME = 'mobile';
 
   static Future<String> serverURL() async {
     var address = await serverAddress();
