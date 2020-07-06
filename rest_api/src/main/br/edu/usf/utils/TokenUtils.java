@@ -133,6 +133,8 @@ public class TokenUtils {
             logger.error("Error to refresh token expire date");
         }
 
+        cleanExpiredTokens();
+
         return false;
     }
 
