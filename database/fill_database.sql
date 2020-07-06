@@ -3,7 +3,7 @@ VALUES ('61143bcd-2e5f-4ea0-8fb0-fa10aaf044c6'::uuid,
         'ADMIN', 'admin', 'admin',
         '5a11f031c0ec66b75db135c29adab3f00f23ee48e33170cdc3e65f1606685005c1f5922666bc6ac850b3f9f67ca72dd8a9ec3a3438f2e218565970ee04e4eb28'),
        ('61143bcd-2e5f-4ea0-8fb0-fa10aaf044c9'::uuid,
-        'Laila Lúcia', 'employee', 'lalalu',
+        'Laila Lucia', 'employee', 'lalalu',
         'eb55219dd8c7d9fdd4e25da79f93712ad4947e6777072e9f9cf34aebe8a7cf450fe70805b9ffc334457d2e08becc6ba494ef9e1b81e82e08c5cc5022de35a193'),
        ('61143bcd-2e5f-4ea0-8fb0-fa10aaf044c8'::uuid,
         'Rodrigo Brossi', 'employee', 'brossi',
@@ -23,11 +23,14 @@ VALUES ('61143bcd-2e5f-4ea0-8fb0-fa10aaf044c6'::uuid,
 
 
 INSERT INTO responsible_student(id, student_id, responsible_id)
-VALUES ('b7b20b4d-4eaf-4b97-8178-fd9cbc07d8b3'::uuid, '61143bcd-2e5f-4ea0-8fb0-fa10aaf044c7'::uuid,
+VALUES ('b7b20b4d-4eaf-4b97-8178-fd9cbc07d8b3'::uuid,
+        '61143bcd-2e5f-4ea0-8fb0-fa10aaf044c7'::uuid,
         '720a65c9-1d7e-40b1-bbac-5b050c17a238'::uuid),
-       ('2601ccea-f934-4a41-985c-37b461395b3f'::uuid, '61143bcd-2e5f-4ea0-8fb0-fa10aaf044c7'::uuid,
+       ('2601ccea-f934-4a41-985c-37b461395b3f'::uuid,
+        '61143bcd-2e5f-4ea0-8fb0-fa10aaf044c7'::uuid,
         '82b75ec8-1e28-4ff3-9f6a-283069471a97'::uuid),
-       ('f86e4276-7670-421b-b6eb-e55a8aa2b684'::uuid, '602fe963-21b1-4846-9807-1de566371316'::uuid,
+       ('f86e4276-7670-421b-b6eb-e55a8aa2b684'::uuid,
+        '602fe963-21b1-4846-9807-1de566371316'::uuid,
         '82b75ec8-1e28-4ff3-9f6a-283069471a97'::uuid);
 
 
@@ -45,13 +48,13 @@ VALUES ('349f78e2-5a5c-471c-b9e4-3645276bfe03'::uuid,
 
 INSERT
 INTO disciplines(id, name)
-VALUES ('eeeb136c-052c-4830-9201-0d681bf11faa'::uuid, 'Matemática'),
-       ('fe67d4ec-f6b6-4964-817b-2c55b3d7deea'::uuid, 'Portugês'),
-       ('73d84bf2-4cc9-45f3-9744-a6ddb54fb6a1'::uuid, 'Física'),
-       ('94e7d4a1-7b04-4d82-b54c-1ea969447209'::uuid, 'História'),
+VALUES ('eeeb136c-052c-4830-9201-0d681bf11faa'::uuid, 'Matematica'),
+       ('fe67d4ec-f6b6-4964-817b-2c55b3d7deea'::uuid, 'Portuges'),
+       ('73d84bf2-4cc9-45f3-9744-a6ddb54fb6a1'::uuid, 'Fisica'),
+       ('94e7d4a1-7b04-4d82-b54c-1ea969447209'::uuid, 'Historia'),
        ('e05e4832-34f7-4cb9-8694-2d5be764f644'::uuid, 'Geografia'),
-       ('226e1aa4-bcd7-4fad-b16b-c91cbcd61163'::uuid, 'Ciências'),
-       ('4934bafb-14b1-4218-818d-d5c60aafa1c6'::uuid, 'Inglês');
+       ('226e1aa4-bcd7-4fad-b16b-c91cbcd61163'::uuid, 'Ciencias'),
+       ('4934bafb-14b1-4218-818d-d5c60aafa1c6'::uuid, 'Ingles');
 
 
 INSERT
@@ -93,6 +96,10 @@ VALUES ('f1fd4be9-ac17-4169-a933-b24d03fe2ce3'::uuid,
         '61143bcd-2e5f-4ea0-8fb0-fa10aaf044c7'::uuid,
         'a8630eb6-7c8d-4d2b-ace7-c761af89378a'::uuid,
         10.0, false),
+       ('7994ee07-084c-44a3-99fe-75de96a33d6e'::uuid,
+        '61143bcd-2e5f-4ea0-8fb0-fa10aaf044c7'::uuid,
+        'a8630eb6-7c8d-4d2b-ace7-c761af89378a'::uuid,
+        1.0, false),
        ('ccc5d4ee-e8e0-4331-8b83-c88e6888485a'::uuid,
         '602fe963-21b1-4846-9807-1de566371316'::uuid,
         'd43888d8-f5fc-4ce9-a342-b88ff290dfa9'::uuid,

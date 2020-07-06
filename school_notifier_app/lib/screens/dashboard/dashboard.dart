@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:school_notifier_app/dao/student_dao.dart';
-import 'package:school_notifier_app/models/user.dart';
-import 'package:school_notifier_app/screens/dashboard/dashboard_menu.dart';
-import 'package:school_notifier_app/models/report_card.dart';
 import 'package:school_notifier_app/dao/report_card_dao.dart';
+import 'package:school_notifier_app/models/report_card.dart';
+import 'package:school_notifier_app/screens/dashboard/dashboard_menu.dart';
 
 class Dashboard extends StatelessWidget {
   @override
@@ -29,19 +27,6 @@ class Dashboard extends StatelessWidget {
         children: [
           _buildReportCardList(),
         ],
-      ),
-    );
-  }
-
-  _studentListBody() {
-    return SafeArea(
-      child: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            _buildStudentList(),
-          ],
-        ),
       ),
     );
   }
@@ -72,48 +57,12 @@ class Dashboard extends StatelessWidget {
     );
   }
 
-  _buildStudentList() {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-        child: FutureBuilder<List<User>>(
-          future: StudentDao.find(),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.none:
-              case ConnectionState.active:
-                break;
-
-              case ConnectionState.waiting:
-                return _loadingData();
-
-              case ConnectionState.done:
-                return _studentsListBuilder(snapshot);
-            }
-            debugPrint("This should not happen...");
-            return Text('Something went wrong while loading list...');
-          },
-        ),
-      ),
-    );
-  }
-
   ListView _reportCardListBuilder(AsyncSnapshot<List<ReportCard>> snapshot) {
     final List<ReportCard> students = snapshot.data;
 
     return ListView.builder(
       itemBuilder: (context, index) =>
           _buildReportCardItem(context, students[index]),
-      itemCount: students.length,
-    );
-  }
-
-  ListView _studentsListBuilder(AsyncSnapshot<List<User>> snapshot) {
-    final List<User> students = snapshot.data;
-
-    return ListView.builder(
-      itemBuilder: (context, index) =>
-          _buildStudentCard(context, students[index]),
       itemCount: students.length,
     );
   }
@@ -142,17 +91,6 @@ class Dashboard extends StatelessWidget {
         ),
         onTap: () => Navigator.pushNamed(context, '/dashboard/report_card',
             arguments: reportCard),
-      ),
-    );
-  }
-
-  _buildStudentCard(BuildContext context, User student) {
-    return Card(
-      child: ListTile(
-        title: Text(student.name),
-        leading: Icon(Icons.person),
-        onTap: () => Navigator.pushNamed(context, '/dashboard/student',
-            arguments: student),
       ),
     );
   }
