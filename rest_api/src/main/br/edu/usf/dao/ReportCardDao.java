@@ -4,6 +4,7 @@ import br.edu.usf.database.DBConnection;
 import br.edu.usf.model.ReportCard;
 import br.edu.usf.model.Responsible;
 import br.edu.usf.model.Student;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,15 +59,7 @@ public class ReportCardDao implements Dao<ReportCard> {
         final String sql = "SELECT * FROM report_cards";
 
         try (final PreparedStatement s = DBConnection.gi().connection().prepareStatement(sql)) {
-            final ResultSet resultSet = s.executeQuery();
-
-            final Collection<ReportCard> reportCards = new ArrayList<>();
-
-            while (resultSet.next()) {
-                final ReportCard reportCard = ReportCard.fromResultSetImpl(resultSet);
-                reportCards.add(reportCard);
-            }
-            return reportCards;
+            return getReportCardsFromStatement(s);
 
         } catch (SQLException e) {
             log.error("Error to search Report Cards", e);
@@ -126,19 +119,24 @@ public class ReportCardDao implements Dao<ReportCard> {
 
         final String sql = "SELECT * FROM report_cards WHERE student_id IN (" + ids + ") ";
         try (final PreparedStatement s = DBConnection.gi().connection().prepareStatement(sql)) {
-            final ResultSet resultSet = s.executeQuery();
-
-            final Collection<ReportCard> reportCards = new ArrayList<>();
-
-            while (resultSet.next()) {
-                final ReportCard reportCard = ReportCard.fromResultSetImpl(resultSet);
-                reportCards.add(reportCard);
-            }
-            return reportCards;
+            return getReportCardsFromStatement(s);
 
         } catch (SQLException e) {
             log.error("Error to get Report Cards related to responsible", e);
         }
         return null;
+    }
+
+    @NotNull
+    private Collection<ReportCard> getReportCardsFromStatement(PreparedStatement s) throws SQLException {
+        final ResultSet resultSet = s.executeQuery();
+
+        final Collection<ReportCard> reportCards = new ArrayList<>();
+
+        while (resultSet.next()) {
+            final ReportCard reportCard = ReportCard.fromResultSetImpl(resultSet);
+            reportCards.add(reportCard);
+        }
+        return reportCards;
     }
 }
