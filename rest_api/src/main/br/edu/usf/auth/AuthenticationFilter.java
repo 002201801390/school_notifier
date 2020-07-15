@@ -1,5 +1,6 @@
 package br.edu.usf.auth;
 
+import br.edu.usf.database.MongoConnection;
 import br.edu.usf.enums.ROLE;
 import br.edu.usf.model.LoggablePerson;
 import br.edu.usf.utils.TokenUtils;
@@ -76,6 +77,10 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             javax.ws.rs.core.SecurityContext securityContext = requestContext.getSecurityContext();
 
             requestContext.setSecurityContext(new br.edu.usf.auth.SecurityContext(securityContext, userByToken, AUTHENTICATION_SCHEME));
+
+            if (!MongoConnection.gi().logRequest(requestContext)) {
+                logger.info("Cannot log request in MongoDB");
+            }
 
         } catch (Exception e) {
             unauthorized(requestContext);

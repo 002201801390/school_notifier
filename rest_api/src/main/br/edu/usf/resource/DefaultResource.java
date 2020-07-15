@@ -1,6 +1,7 @@
 package br.edu.usf.resource;
 
 import br.edu.usf.auth.Secured;
+import br.edu.usf.database.MongoConnection;
 import br.edu.usf.enums.ROLE;
 
 import javax.ws.rs.GET;
@@ -18,7 +19,7 @@ public abstract class DefaultResource<T> {
     @Path("/insert")
     @Produces(MediaType.APPLICATION_JSON)
     public final Response insert(String body) {
-        return Response.status(insertImpl(convertInput(body)) ? Response.Status.OK : Response.Status.CONFLICT).build();
+        return MongoConnection.gi().logResponse(Response.status(insertImpl(convertInput(body)) ? Response.Status.OK : Response.Status.CONFLICT).build());
     }
 
     public abstract boolean insertImpl(T t);
@@ -28,7 +29,7 @@ public abstract class DefaultResource<T> {
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
     public final Response findAll() {
-        return Response.status(Response.Status.OK).entity(findAllImpl()).build();
+        return MongoConnection.gi().logResponse(Response.status(Response.Status.OK).entity(findAllImpl()).build());
     }
 
     public abstract Collection<T> findAllImpl();
@@ -38,7 +39,7 @@ public abstract class DefaultResource<T> {
     @Path("/update")
     @Produces(MediaType.APPLICATION_JSON)
     public final Response update(String body) {
-        return Response.status(updateImpl(convertInput(body)) ? Response.Status.OK : Response.Status.CONFLICT).build();
+        return MongoConnection.gi().logResponse(Response.status(updateImpl(convertInput(body)) ? Response.Status.OK : Response.Status.CONFLICT).build());
     }
 
     public abstract boolean updateImpl(T t);
@@ -48,7 +49,7 @@ public abstract class DefaultResource<T> {
     @Path("/delete")
     @Produces(MediaType.APPLICATION_JSON)
     public final Response delete(String body) {
-        return Response.status(deleteImpl(convertInput(body)) ? Response.Status.OK : Response.Status.CONFLICT).build();
+        return MongoConnection.gi().logResponse(Response.status(deleteImpl(convertInput(body)) ? Response.Status.OK : Response.Status.CONFLICT).build());
     }
 
     public abstract boolean deleteImpl(T t);
